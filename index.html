@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#090d16] text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharrys Financial Suite - Tools & Calculators</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#090d16',
+                            card: '#111827',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                            accent: '#38bdf8', // Cyan
+                            purple: '#818cf8',  // Indigo
+                            emerald: '#34d399'  // Emerald
+                        }
+                    },
+                    boxShadow: {
+                        glow: '0 0 25px -5px rgba(56, 189, 248, 0.15)',
+                        'glow-purple': '0 0 25px -5px rgba(129, 140, 248, 0.2)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-panel-hover {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-panel-hover:hover {
+            border-color: rgba(56, 189, 248, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.12);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="min-h-full flex flex-col font-sans antialiased selection:bg-cyan-500 selection:text-black bg-[#090d16] text-slate-100">
+
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/3 -right-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <header class="relative z-10 border-b border-slate-800/80 bg-[#090d16]/80 backdrop-blur-md sticky top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-slate-900 border border-slate-700/60 rounded-xl text-cyan-400 shadow-glow">
+                    <i data-lucide="layout-grid" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl font-extrabold tracking-tight text-white font-mono">BHARRYS <span class="text-cyan-400">FINANCIAL</span></h1>
+                        <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-cyan-950/80 text-cyan-400 border border-cyan-800/50">SUITE</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-0.5">Scalable suite of interactive financial tools & decision models</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Hero Banner & Stats Bar -->
+        <section class="glass-panel rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 opacity-5 text-cyan-400 pointer-events-none">
+                <i data-lucide="line-chart" class="w-80 h-80"></i>
+            </div>
+            
+            <div class="max-w-3xl space-y-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-700/80 text-xs font-medium text-slate-300">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Live Production Suite</span>
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                    Smart Financial Calculators for <span class="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">Smarter Decisions</span>
+                </h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Explore our suite of specialized financial models—ranging from mortgage amortization schedules with extra payment analysis to certificate of deposit APY compounding calculations.
+                </p>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="mt-8 pt-6 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+                <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+                    <p class="text-slate-400 font-medium">Live Tools</p>
+                    <p class="text-xl font-bold font-mono text-cyan-400 mt-1" id="stat-active-count">2 Active</p>
+                </div>
+                <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+                    <p class="text-slate-400 font-medium">Planned Suite</p>
+                    <p class="text-xl font-bold font-mono text-indigo-400 mt-1" id="stat-total-count">6+ Tools</p>
+                </div>
+                <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+                    <p class="text-slate-400 font-medium">Data Privacy</p>
+                    <p class="text-xl font-bold font-mono text-emerald-400 mt-1">100% Client-side</p>
+                </div>
+                <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+                    <p class="text-slate-400 font-medium">Access Cost</p>
+                    <p class="text-xl font-bold font-mono text-white mt-1">Free & Open</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-4">
+            <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+                
+                <!-- Search Input -->
+                <div class="relative flex-1">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                        <i data-lucide="search" class="w-4 h-4"></i>
+                    </span>
+                    <input type="text" id="search-input" placeholder="Search calculators by keyword, topic, or tag (e.g., mortgage, APY, savings)..." class="w-full pl-10 pr-10 py-2.5 bg-slate-900/90 border border-slate-800 rounded-xl text-xs font-semibold text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition" oninput="handleSearchFilter()">
+                    <button type="button" id="clear-search-btn" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-white">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Live Only Toggle -->
+                <div class="flex items-center gap-2 self-end md:self-auto bg-slate-900/90 px-3 py-2 rounded-xl border border-slate-800">
+                    <label for="toggle-live-only" class="text-xs text-slate-300 font-semibold cursor-pointer select-none">Show Live Only</label>
+                    <input type="checkbox" id="toggle-live-only" onchange="handleSearchFilter()" class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-cyan-500 cursor-pointer">
+                </div>
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="category-pills">
+                <!-- Dynamic Category Buttons Populated in JS -->
+            </div>
+        </section>
+
+        <section id="favorites-container" class="hidden space-y-3">
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <span>Pinned Quick-Access Tools</span>
+            </div>
+            <div id="favorites-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Pinned items dynamically inserted -->
+            </div>
+        </section>
+
+        <section class="space-y-3">
+            <div class="flex items-center justify-between">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                    <i data-lucide="grid" class="w-4 h-4 text-cyan-400"></i>
+                    Available & Upcoming Tools
+                </h3>
+                <span class="text-xs font-mono text-slate-400" id="tools-counter">Showing 0 tools</span>
+            </div>
+
+            <div id="tools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Cards dynamically populated via JS -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden glass-panel rounded-2xl p-8 text-center space-y-3">
+                <div class="p-3 bg-slate-900 rounded-2xl w-12 h-12 mx-auto text-slate-500 flex items-center justify-center">
+                    <i data-lucide="folder-search" class="w-6 h-6"></i>
+                </div>
+                <h4 class="text-base font-bold text-white">No tools match your search</h4>
+                <p class="text-xs text-slate-400 max-w-sm mx-auto">Try clearing your filters or search keywords to view all available calculators.</p>
+                <button type="button" onclick="clearSearch()" class="px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-slate-800 text-cyan-400 border border-slate-700 hover:bg-slate-700 transition">
+                    Reset Filters
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="add-tool-modal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-lg rounded-2xl p-6 space-y-4 relative border border-slate-700 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2 text-cyan-400">
+                    <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                    <h3 class="text-base font-bold text-white">Add New Tool to Suite</h3>
+                </div>
+                <button type="button" onclick="closeAddToolModal()" class="text-slate-400 hover:text-white p-1">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="add-tool-form" onsubmit="handleAddToolSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Tool Title *</label>
+                    <input type="text" id="new-tool-title" required placeholder="e.g. Tax Bracket Calculator" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-cyan-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Category *</label>
+                        <select id="new-tool-category" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-cyan-500">
+                            <option value="Mortgage & Loans">Mortgage & Loans</option>
+                            <option value="Savings & Yield">Savings & Yield</option>
+                            <option value="Investments">Investments</option>
+                            <option value="Taxes & Income">Taxes & Income</option>
+                            <option value="Other Tools">Other Tools</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Icon Name (Lucide)</label>
+                        <input type="text" id="new-tool-icon" placeholder="e.g. calculator, wallet, coins" value="calculator" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-cyan-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Hosted URL *</label>
+                    <input type="url" id="new-tool-url" required placeholder="https://yourtool.bharrys.com/" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-cyan-500">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Description *</label>
+                    <textarea id="new-tool-desc" required rows="2" placeholder="Brief explanation of what this tool calculates..." class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-cyan-500"></textarea>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Tags (Comma Separated)</label>
+                    <input type="text" id="new-tool-tags" placeholder="e.g. Taxes, IRS, Deductions" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-cyan-500">
+                </div>
+
+                <div class="flex items-center gap-2 pt-2">
+                    <input type="checkbox" id="new-tool-is-live" checked class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-cyan-500">
+                    <label for="new-tool-is-live" class="font-semibold text-slate-300 select-none">Mark as Live & Active</label>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+                    <button type="button" onclick="closeAddToolModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold hover:bg-slate-700 transition">Cancel</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition">Add Tool</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="border-t border-slate-800/80 bg-[#090d16] text-slate-500 text-xs py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <p>&copy; <span id="year"></span> Bharrys Ventures. All tools run securely in your browser.</p>
+            <div class="flex items-center gap-4 text-slate-400">
+                <a href="https://cdcalc.bharrys.com/" target="_blank" class="hover:text-cyan-400 transition">CD Calculator</a>
+                <span class="text-slate-800">•</span>
+                <a href="https://mortgagecalc.bharrys.com/" target="_blank" class="hover:text-cyan-400 transition">Mortgage Calculator</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initial core dataset of financial tools
+        const DEFAULT_TOOLS = [
+            {
+                id: 'mortgage-calc',
+                title: 'Mortgage & Loan Amortization Calculator',
+                category: 'Mortgage & Loans',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://mortgagecalc.bharrys.com/',
+                icon: 'calculator',
+                description: 'Calculate monthly payments, lifetime interest, extra principal payment savings, and balance schedules with live market benchmark rates.',
+                tags: ['Mortgage', 'Amortization', 'Extra Payments', 'Home Loan', 'Interest'],
+                isLive: true
+            },
+            {
+                id: 'cd-calc',
+                title: 'Certificate of Deposit (CD) Calculator',
+                category: 'Savings & Yield',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://cdcalc.bharrys.com/',
+                icon: 'piggy-bank',
+                description: 'Estimate compound interest earnings on CDs, compare APY compounding frequencies, tax considerations, and penalty scenarios.',
+                tags: ['CD', 'Savings', 'APY', 'Compound Interest', 'Yield', 'Bank Rate'],
+                isLive: true
+            },
+            {
+                id: 'compound-interest',
+                title: 'Compound Interest & Wealth Growth',
+                category: 'Investments',
+                badge: 'Coming Soon',
+                badgeColor: 'amber',
+                url: '#',
+                icon: 'trending-up',
+                description: 'Project long-term investment growth with monthly recurring contributions, adjustable rate of return, and inflation adjustments.',
+                tags: ['Investing', 'Stocks', 'Compound Interest', 'Wealth', 'Portfolio'],
+                isLive: false
+            },
+            {
+                id: 'auto-loan-calc',
+                title: 'Auto Loan & Financing Estimator',
+                category: 'Mortgage & Loans',
+                badge: 'Coming Soon',
+                badgeColor: 'amber',
+                url: '#',
+                icon: 'car',
+                description: 'Estimate monthly vehicle loan payments incorporating sales tax, dealer fees, trade-in value, and interest rates.',
+                tags: ['Auto', 'Car Loan', 'Vehicle', 'Financing', 'Trade-In'],
+                isLive: false
+            },
+            {
+                id: 'retirement-planner',
+                title: 'Retirement & FIRE Nest Egg Model',
+                category: 'Investments',
+                badge: 'Planned',
+                badgeColor: 'purple',
+                url: '#',
+                icon: 'palmtree',
+                description: 'Determine your required retirement nest egg, safe withdrawal rates (4% rule), and target independence timeline.',
+                tags: ['Retirement', 'FIRE', '401k', 'IRA', 'Savings Goal'],
+                isLive: false
+            },
+            {
+                id: 'debt-payoff',
+                title: 'Debt Avalanche & Snowball Planner',
+                category: 'Mortgage & Loans',
+                badge: 'Planned',
+                badgeColor: 'purple',
+                url: '#',
+                icon: 'shield-alert',
+                description: 'Create an optimized debt payoff roadmap to eliminate credit card and loan balances with minimal interest costs.',
+                tags: ['Debt', 'Credit Cards', 'Avalanche', 'Snowball', 'Payoff'],
+                isLive: false
+            }
+        ];
+
+        // State Management
+        let toolsList = [];
+        let activeCategory = 'All';
+        let pinnedToolIds = new Set();
+
+        // Load persisted tools and favorites from LocalStorage
+        function initData() {
+            const savedTools = localStorage.getItem('bharrys_custom_tools');
+            if (savedTools) {
+                try {
+                    const parsed = JSON.parse(savedTools);
+                    toolsList = [...DEFAULT_TOOLS, ...parsed];
+                } catch (e) {
+                    toolsList = [...DEFAULT_TOOLS];
+                }
+            } else {
+                toolsList = [...DEFAULT_TOOLS];
+            }
+
+            const savedPins = localStorage.getItem('bharrys_pinned_tools');
+            if (savedPins) {
+                try {
+                    pinnedToolIds = new Set(JSON.parse(savedPins));
+                } catch (e) {
+                    pinnedToolIds = new Set();
+                }
+            }
+
+            renderCategories();
+            handleSearchFilter();
+            updateStats();
+        }
+
+        // Save Pinned state
+        function togglePin(toolId, event) {
+            if (event) event.stopPropagation();
+            if (pinnedToolIds.has(toolId)) {
+                pinnedToolIds.delete(toolId);
+            } else {
+                pinnedToolIds.add(toolId);
+            }
+            localStorage.setItem('bharrys_pinned_tools', JSON.stringify(Array.from(pinnedToolIds)));
+            handleSearchFilter();
+        }
+
+        // Render Category Filter Buttons
+        function renderCategories() {
+            const categories = ['All', ...new Set(toolsList.map(t => t.category))];
+            const container = document.getElementById('category-pills');
+            container.innerHTML = '';
+
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition border ${
+                    activeCategory === cat
+                        ? 'bg-cyan-500 text-black border-cyan-400 font-bold shadow-glow'
+                        : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white hover:border-slate-700'
+                }`;
+                btn.textContent = cat;
+                btn.onclick = () => {
+                    activeCategory = cat;
+                    renderCategories();
+                    handleSearchFilter();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        // Filter and Search Handler
+        function handleSearchFilter() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const liveOnly = document.getElementById('toggle-live-only').checked;
+            const clearBtn = document.getElementById('clear-search-btn');
+
+            if (clearBtn) {
+                if (query.length > 0) clearBtn.classList.remove('hidden');
+                else clearBtn.classList.add('hidden');
+            }
+
+            const filtered = toolsList.filter(tool => {
+                // Category match
+                if (activeCategory !== 'All' && tool.category !== activeCategory) return false;
+                // Live match
+                if (liveOnly && !tool.isLive) return false;
+                // Query match
+                if (query) {
+                    const matchTitle = tool.title.toLowerCase().includes(query);
+                    const matchDesc = tool.description.toLowerCase().includes(query);
+                    const matchCategory = tool.category.toLowerCase().includes(query);
+                    const matchTags = tool.tags.some(t => t.toLowerCase().includes(query));
+                    return matchTitle || matchDesc || matchCategory || matchTags;
+                }
+                return true;
+            });
+
+            renderPinnedSection(filtered);
+            renderToolsGrid(filtered);
+        }
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('toggle-live-only').checked = false;
+            activeCategory = 'All';
+            renderCategories();
+            handleSearchFilter();
+        }
+
+        // Render Pinned/Favorites Header
+        function renderPinnedSection(allFilteredTools) {
+            const container = document.getElementById('favorites-container');
+            const grid = document.getElementById('favorites-grid');
+            grid.innerHTML = '';
+
+            const pinnedTools = toolsList.filter(t => pinnedToolIds.has(t.id));
+
+            if (pinnedTools.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+
+            pinnedTools.forEach(tool => {
+                grid.appendChild(createToolCard(tool, true));
+            });
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        // Render Tool Grid Cards
+        function renderToolsGrid(tools) {
+            const grid = document.getElementById('tools-grid');
+            const emptyState = document.getElementById('empty-state');
+            const counter = document.getElementById('tools-counter');
+
+            grid.innerHTML = '';
+            counter.textContent = `Showing ${tools.length} tool${tools.length === 1 ? '' : 's'}`;
+
+            if (tools.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            } else {
+                grid.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+
+                tools.forEach(tool => {
+                    grid.appendChild(createToolCard(tool, false));
+                });
+            }
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        // Create HTML Element for Card
+        function createToolCard(tool, isPinnedView) {
+            const card = document.createElement('div');
+            card.className = `glass-panel rounded-2xl p-5 space-y-4 flex flex-col justify-between glass-panel-hover relative group ${
+                tool.isLive ? 'border-slate-800' : 'border-slate-800/60 opacity-90'
+            }`;
+
+            const isPinned = pinnedToolIds.has(tool.id);
+
+            const badgeStyles = {
+                cyan: 'bg-cyan-950/80 text-cyan-400 border-cyan-800/50',
+                emerald: 'bg-emerald-950/80 text-emerald-400 border-emerald-800/50',
+                amber: 'bg-amber-950/80 text-amber-400 border-amber-800/50',
+                purple: 'bg-purple-950/80 text-purple-400 border-purple-800/50'
+            };
+
+            const currentBadgeStyle = badgeStyles[tool.badgeColor] || badgeStyles.cyan;
+
+            card.innerHTML = `
+                <div class="space-y-3">
+                    <!-- Top Bar: Category & Pin -->
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] uppercase font-mono tracking-wider text-slate-400 bg-slate-900 px-2.5 py-1 rounded-full border border-slate-800">
+                            ${tool.category}
+                        </span>
+                        
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md border ${currentBadgeStyle}">
+                                ${tool.isLive ? '● ' : ''}${tool.badge}
+                            </span>
+                            <button type="button" onclick="togglePin('${tool.id}', event)" title="${isPinned ? 'Unpin' : 'Pin to favorites'}" class="p-1 rounded-lg hover:bg-slate-800 text-slate-500 transition ${isPinned ? 'text-amber-400' : ''}">
+                                <i data-lucide="star" class="w-4 h-4 ${isPinned ? 'fill-amber-400' : ''}"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Header & Icon -->
+                    <div class="flex items-start gap-3 pt-1">
+                        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-700/60 text-cyan-400 group-hover:scale-105 transition">
+                            <i data-lucide="${tool.icon || 'calculator'}" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white group-hover:text-cyan-300 transition">${tool.title}</h4>
+                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">${tool.description}</p>
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="flex flex-wrap gap-1.5 pt-1">
+                        ${tool.tags.map(tag => `
+                            <span class="text-[10px] font-medium text-slate-400 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800/60">
+                                #${tag}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="pt-3 border-t border-slate-800/80">
+                    ${tool.isLive ? `
+                        <a href="${tool.url}" target="_blank" rel="noopener noreferrer" class="w-full px-4 py-2 text-xs font-bold rounded-xl bg-slate-800 hover:bg-cyan-500 hover:text-black text-cyan-400 border border-slate-700/80 transition flex items-center justify-center gap-2 group/btn">
+                            <span>Launch Calculator</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover/btn:translate-x-1 transition"></i>
+                        </a>
+                    ` : `
+                        <button type="button" disabled class="w-full px-4 py-2 text-xs font-semibold rounded-xl bg-slate-900 text-slate-500 border border-slate-800/60 cursor-not-allowed flex items-center justify-center gap-2">
+                            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                            <span>In Development</span>
+                        </button>
+                    `}
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Stats update
+        function updateStats() {
+            const activeCount = toolsList.filter(t => t.isLive).length;
+            const activeEl = document.getElementById('stat-active-count');
+            const totalEl = document.getElementById('stat-total-count');
+
+            if (activeEl) activeEl.textContent = `${activeCount} Active`;
+            if (totalEl) totalEl.textContent = `${toolsList.length} Tools`;
+        }
+
+        // Modal functions for adding custom tool
+        function openAddToolModal() {
+            document.getElementById('add-tool-modal').classList.remove('hidden');
+        }
+
+        function closeAddToolModal() {
+            document.getElementById('add-tool-modal').classList.add('hidden');
+            document.getElementById('add-tool-form').reset();
+        }
+
+        function handleAddToolSubmit(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('new-tool-title').value.trim();
+            const category = document.getElementById('new-tool-category').value;
+            const icon = document.getElementById('new-tool-icon').value.trim() || 'calculator';
+            const url = document.getElementById('new-tool-url').value.trim();
+            const description = document.getElementById('new-tool-desc').value.trim();
+            const tagsRaw = document.getElementById('new-tool-tags').value.trim();
+            const isLive = document.getElementById('new-tool-is-live').checked;
+
+            const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [category];
+
+            const newTool = {
+                id: 'custom-' + Date.now(),
+                title,
+                category,
+                badge: isLive ? 'Live' : 'Planned',
+                badgeColor: isLive ? 'cyan' : 'amber',
+                url,
+                icon,
+                description,
+                tags,
+                isLive
+            };
+
+            toolsList.unshift(newTool);
+
+            // Persist custom tools
+            const existingCustom = JSON.parse(localStorage.getItem('bharrys_custom_tools') || '[]');
+            existingCustom.unshift(newTool);
+            localStorage.setItem('bharrys_custom_tools', JSON.stringify(existingCustom));
+
+            closeAddToolModal();
+            renderCategories();
+            handleSearchFilter();
+            updateStats();
+        }
+
+        // Initialize application on load
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+            const yearEl = document.getElementById('year');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+            
+            initData();
+        });
+    </script>
+</body>
+</html>
