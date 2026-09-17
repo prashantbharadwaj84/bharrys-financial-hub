@@ -18,9 +18,9 @@
                             dark: '#090d16',
                             card: '#111827',
                             border: 'rgba(255, 255, 255, 0.08)',
-                            accent: '#38bdf8', // Cyan
-                            purple: '#818cf8',  // Indigo
-                            emerald: '#34d399'  // Emerald
+                            accent: '#38bdf8',
+                            purple: '#818cf8',
+                            emerald: '#34d399'
                         }
                     },
                     boxShadow: {
@@ -128,117 +128,72 @@
                 </div>
             </div>
 
-            <!-- Live U.S. Stock Market Indices Tracker -->
-            <div class="mt-6 p-4 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-3">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div class="flex items-center gap-2.5">
-                        <div class="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                            <i data-lucide="trending-up" class="w-4 h-4"></i>
+            <!-- Dynamic Market Indices & Interest Rates Grid -->
+            <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                
+                <!-- Finnhub Market Indices Card -->
+                <div class="p-4 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
+                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Market Indices</h3>
+                            <span class="text-[10px] font-mono text-slate-400" id="market-timestamp">Finnhub Live</span>
                         </div>
-                        <div>
-                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Major U.S. Stock Market Indices</h3>
-                            <p class="text-[11px] text-slate-400">Real-time market watch</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2 self-start sm:self-auto">
-                        <button type="button" onclick="fetchMarketIndices()" title="Refresh Stock Data" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition border border-slate-700">
-                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5" id="refresh-indices-icon"></i>
+                        <button type="button" onclick="fetchMarketIndices()" title="Refresh Market Data" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition border border-slate-700">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5" id="refresh-market-icon"></i>
                         </button>
-                        <div class="inline-flex items-center gap-1.5 text-[10px] font-mono px-2.5 py-1 rounded-full bg-slate-800 border border-slate-700/80 text-cyan-400">
-                            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                            <span id="market-status-time">Loading Market Data...</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-xs font-mono">
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">S&P 500 (SPY)</span>
+                            <span class="text-sm font-extrabold text-white mt-0.5" id="idx-spy-price">Loading...</span>
+                            <span class="text-[10px] mt-0.5 font-bold" id="idx-spy-change">--</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">Nasdaq (QQQ)</span>
+                            <span class="text-sm font-extrabold text-white mt-0.5" id="idx-qqq-price">Loading...</span>
+                            <span class="text-[10px] mt-0.5 font-bold" id="idx-qqq-change">--</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">Dow (DIA)</span>
+                            <span class="text-sm font-extrabold text-white mt-0.5" id="idx-dia-price">Loading...</span>
+                            <span class="text-[10px] mt-0.5 font-bold" id="idx-dia-change">--</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                    <!-- S&P 500 Card -->
-                    <div class="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/60 relative overflow-hidden flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">S&P 500 ETF (SPY)</span>
-                                <span class="text-[9px] font-mono bg-slate-900 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">SPY</span>
-                            </div>
-                            <div class="flex items-baseline gap-2 mt-2">
-                                <span class="text-xl font-extrabold font-mono text-white" id="sp500-price">--</span>
-                                <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-0.5" id="sp500-change-pill">
-                                    <span id="sp500-change">--</span>
-                                </span>
-                            </div>
+                <!-- U.S. Treasury Benchmark Rates Card -->
+                <div class="p-4 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="percent" class="w-4 h-4 text-cyan-400"></i>
+                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Benchmark Interest Rates</h3>
+                            <span class="text-[10px] font-mono text-slate-400" id="rate-timestamp">U.S. Treasury API</span>
                         </div>
-                        <div class="mt-3">
-                            <svg id="sp500-sparkline" class="w-full h-6"></svg>
-                        </div>
+                        <button type="button" onclick="fetchTreasuryBenchmarkRates()" title="Refresh Benchmark Rates" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition border border-slate-700">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5" id="refresh-rates-icon"></i>
+                        </button>
                     </div>
-
-                    <!-- Dow Jones Card -->
-                    <div class="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/60 relative overflow-hidden flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">Dow Jones ETF (DIA)</span>
-                                <span class="text-[9px] font-mono bg-slate-900 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">DIA</span>
-                            </div>
-                            <div class="flex items-baseline gap-2 mt-2">
-                                <span class="text-xl font-extrabold font-mono text-white" id="dow-price">--</span>
-                                <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-0.5" id="dow-change-pill">
-                                    <span id="dow-change">--</span>
-                                </span>
-                            </div>
+                    <div class="grid grid-cols-4 gap-2 text-xs font-mono">
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">30-Yr Fixed</span>
+                            <span class="text-sm font-extrabold text-cyan-400 mt-0.5" id="hub-rate-30yr">Loading...</span>
                         </div>
-                        <div class="mt-3">
-                            <svg id="dow-sparkline" class="w-full h-6"></svg>
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">15-Yr Fixed</span>
+                            <span class="text-sm font-extrabold text-cyan-400 mt-0.5" id="hub-rate-15yr">Loading...</span>
                         </div>
-                    </div>
-
-                    <!-- Nasdaq Composite Card -->
-                    <div class="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/60 relative overflow-hidden flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">Nasdaq ETF (QQQ)</span>
-                                <span class="text-[9px] font-mono bg-slate-900 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">QQQ</span>
-                            </div>
-                            <div class="flex items-baseline gap-2 mt-2">
-                                <span class="text-xl font-extrabold font-mono text-white" id="nasdaq-price">--</span>
-                                <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-0.5" id="nasdaq-change-pill">
-                                    <span id="nasdaq-change">--</span>
-                                </span>
-                            </div>
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">Short-Term</span>
+                            <span class="text-sm font-extrabold text-indigo-400 mt-0.5" id="hub-rate-fed">Loading...</span>
                         </div>
-                        <div class="mt-3">
-                            <svg id="nasdaq-sparkline" class="w-full h-6"></svg>
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">Prime Rate</span>
+                            <span class="text-sm font-extrabold text-emerald-400 mt-0.5" id="hub-rate-prime">Loading...</span>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Live Fed Funds & Market Interest Rate Card -->
-            <div class="mt-4 p-4 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-3">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div class="flex items-center gap-2">
-                        <i data-lucide="percent" class="w-4 h-4 text-cyan-400"></i>
-                        <h3 class="text-xs font-bold text-white uppercase tracking-wider">Today's Interest Rates</h3>
-                        <span class="text-[10px] font-mono text-slate-400" id="rate-timestamp">FRED Live</span>
-                    </div>
-                    <span class="text-[11px] text-slate-400">Fed & Mortgage benchmarks</span>
-                </div>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono">
-                    <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
-                        <span class="text-[10px] text-slate-400">30-Yr Fixed</span>
-                        <span class="text-base font-extrabold text-cyan-400 mt-0.5" id="hub-rate-30yr">6.85%</span>
-                    </div>
-                    <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
-                        <span class="text-[10px] text-slate-400">15-Yr Fixed</span>
-                        <span class="text-base font-extrabold text-cyan-400 mt-0.5" id="hub-rate-15yr">6.10%</span>
-                    </div>
-                    <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
-                        <span class="text-[10px] text-slate-400">Fed Funds</span>
-                        <span class="text-base font-extrabold text-indigo-400 mt-0.5" id="hub-rate-fed">5.33%</span>
-                    </div>
-                    <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
-                        <span class="text-[10px] text-slate-400">Prime Rate</span>
-                        <span class="text-base font-extrabold text-emerald-400 mt-0.5" id="hub-rate-prime">8.33%</span>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -265,9 +220,7 @@
 
             <!-- Category Pills & Count -->
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2 border-t border-slate-800/60">
-                <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0" id="category-pills">
-                    <!-- Category buttons populated via JS -->
-                </div>
+                <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0" id="category-pills"></div>
                 <span class="text-xs font-mono text-slate-400 shrink-0" id="tools-counter">Showing 0 tools</span>
             </div>
         </div>
@@ -313,11 +266,9 @@
     </footer>
 
     <script>
-        // Finnhub API Key for reliable live stock quotes
+        // Finnhub API Key - Get your free key at https://finnhub.io/
         const FINNHUB_API_KEY = 'dam6odhr01qvokaq5600dam6odhr01qvokaq560g';
-        const PROXY = 'https://corsproxy.io/?';
 
-        // Initial core dataset of financial tools
         const DEFAULT_TOOLS = [
             {
                 id: 'mortgage-calc',
@@ -327,7 +278,7 @@
                 badgeColor: 'cyan',
                 url: 'https://mortgagecalc.bharrys.com/',
                 icon: 'calculator',
-                description: 'Calculate monthly payments, lifetime interest, extra principal payment savings, and balance schedules with live market benchmark rates.',
+                description: 'Calculate monthly payments, lifetime interest, extra principal payment savings, and balance schedules with live benchmark estimates.',
                 tags: ['Mortgage', 'Amortization', 'Extra Payments', 'Home Loan', 'Interest'],
                 isLive: true
             },
@@ -393,205 +344,118 @@
             }
         ];
 
-        // State Management
         let toolsList = [];
         let activeCategory = 'All';
         let pinnedToolIds = new Set();
 
-        let liveBenchmarkRates = {
-            'fed': 5.33,
-            '30yr': 6.85,
-            '15yr': 6.10,
-            'prime': 8.33
-        };
-
-        // Stock Market Indices State (Real-Time Tracker)
-        let liveStockIndices = {
-            sp500: { price: 0, change: 0, percent: 0, history: [] },
-            dow: { price: 0, change: 0, percent: 0, history: [] },
-            nasdaq: { price: 0, change: 0, percent: 0, history: [] }
-        };
-
         const formatPercent = (val) => `${val.toFixed(2)}%`;
-        const formatNumber = (num, decimals = 2) => num.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 
-        // Fetch Live Market Quotes via Finnhub API
+        // Finnhub API Fetch Function for Market Indices
         async function fetchMarketIndices() {
-            const statusEl = document.getElementById('market-status-time');
-            const iconEl = document.getElementById('refresh-indices-icon');
+            const iconEl = document.getElementById('refresh-market-icon');
+            const timestampEl = document.getElementById('market-timestamp');
             if (iconEl) iconEl.classList.add('animate-spin');
 
-            const indexMap = [
-                { key: 'sp500', ticker: 'SPY' },
-                { key: 'dow', ticker: 'DIA' },
-                { key: 'nasdaq', ticker: 'QQQ' }
+            const symbols = [
+                { symbol: 'SPY', priceId: 'idx-spy-price', changeId: 'idx-spy-change' },
+                { symbol: 'QQQ', priceId: 'idx-qqq-price', changeId: 'idx-qqq-change' },
+                { symbol: 'DIA', priceId: 'idx-dia-price', changeId: 'idx-dia-change' }
             ];
 
             try {
-                await Promise.all(indexMap.map(async (item) => {
-                    const endpoint = `https://finnhub.io/api/v1/quote?symbol=${item.ticker}&token=${FINNHUB_API_KEY}`;
-                    const res = await fetch(endpoint);
-                    
-                    if (!res.ok) throw new Error('Network error fetching Finnhub quotes');
+                await Promise.all(symbols.map(async (item) => {
+                    const url = `https://finnhub.io/api/v1/quote?symbol=${item.symbol}&token=${FINNHUB_API_KEY}`;
+                    const res = await fetch(url);
+                    if (!res.ok) throw new Error(`Finnhub API Error: ${res.status}`);
                     
                     const data = await res.json();
                     
-                    if (data && data.c && data.c !== 0) {
-                        const currentPrice = data.c;
-                        const change = data.d;
-                        const percent = data.dp;
-                        const history = [data.pc, data.l, data.h, currentPrice];
+                    // c = current price, d = change, dp = percent change
+                    if (data && data.c !== 0) {
+                        const priceEl = document.getElementById(item.priceId);
+                        const changeEl = document.getElementById(item.changeId);
 
-                        liveStockIndices[item.key] = {
-                            price: currentPrice,
-                            change: change,
-                            percent: percent,
-                            history: history
-                        };
+                        if (priceEl) priceEl.textContent = `$${data.c.toFixed(2)}`;
+                        if (changeEl) {
+                            const isPositive = data.d >= 0;
+                            const sign = isPositive ? '+' : '';
+                            changeEl.textContent = `${sign}${data.d.toFixed(2)} (${sign}${data.dp.toFixed(2)}%)`;
+                            changeEl.className = `text-[10px] mt-0.5 font-bold ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`;
+                        }
                     }
                 }));
 
-                if (statusEl) {
+                if (timestampEl) {
                     const now = new Date();
-                    statusEl.textContent = `Live Data ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                    timestampEl.textContent = `Live ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
                 }
             } catch (err) {
-                console.error('Failed to fetch real-time index values:', err);
-                if (statusEl) statusEl.textContent = 'API Error / Check Token';
+                console.error('Error fetching market indices from Finnhub:', err);
+                if (timestampEl) timestampEl.textContent = 'API Key Required';
             } finally {
                 if (iconEl) iconEl.classList.remove('animate-spin');
-                renderStockIndices();
             }
         }
 
-        function renderStockIndices() {
-            ['sp500', 'dow', 'nasdaq'].forEach(key => {
-                const data = liveStockIndices[key];
-                if (!data || data.price === 0) return;
-
-                const isPositive = data.change >= 0;
-
-                const priceEl = document.getElementById(`${key}-price`);
-                const changeEl = document.getElementById(`${key}-change`);
-                const pillEl = document.getElementById(`${key}-change-pill`);
-
-                if (priceEl) priceEl.textContent = formatNumber(data.price);
-                if (changeEl) {
-                    const sign = isPositive ? '+' : '';
-                    changeEl.textContent = `${sign}${formatNumber(data.change)} (${sign}${formatPercent(data.percent)})`;
-                }
-
-                if (pillEl) {
-                    pillEl.className = `text-xs font-mono font-bold flex items-center gap-0.5 ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`;
-                    pillEl.innerHTML = `
-                        <i data-lucide="${isPositive ? 'arrow-up-right' : 'arrow-down-right'}" class="w-3 h-3"></i>
-                        <span>${isPositive ? '+' : ''}${formatNumber(data.change)} (${isPositive ? '+' : ''}${formatPercent(data.percent)})</span>
-                    `;
-                }
-
-                renderSparkline(`${key}-sparkline`, data.history, isPositive);
-            });
-
-            if (window.lucide) lucide.createIcons();
-        }
-
-        function renderSparkline(elementId, history, isPositive) {
-            const svg = document.getElementById(elementId);
-            if (!svg || !history || history.length < 2) return;
-
-            const min = Math.min(...history);
-            const max = Math.max(...history);
-            const range = max - min || 1;
-
-            const width = 100;
-            const height = 24;
-            const padding = 2;
-
-            const points = history.map((val, idx) => {
-                const x = (idx / (history.length - 1)) * width;
-                const y = height - padding - ((val - min) / range) * (height - padding * 2);
-                return `${x.toFixed(1)},${y.toFixed(1)}`;
-            }).join(' ');
-
-            const strokeColor = isPositive ? '#34d399' : '#f87171';
-            
-            svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-            svg.innerHTML = `
-                <polyline
-                    fill="none"
-                    stroke="${strokeColor}"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    points="${points}"
-                />
-            `;
-        }
-
-        function fetchMarketData() {
-            fetchFredBenchmarkRates();
-            fetchMarketIndices();
-        }
-
-        async function fetchFredBenchmarkRates() {
+        // U.S. Treasury API Fetch Function
+        async function fetchTreasuryBenchmarkRates() {
             const timestampEl = document.getElementById('rate-timestamp');
-            const rateFedEl = document.getElementById('hub-rate-fed');
-            const ratePrimeEl = document.getElementById('hub-rate-prime');
-            const rate30El = document.getElementById('hub-rate-30yr');
-            const rate15El = document.getElementById('hub-rate-15yr');
+            const iconEl = document.getElementById('refresh-rates-icon');
+            if (iconEl) iconEl.classList.add('animate-spin');
+
+            const endpoint = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/avg_interest_rates?sort=-record_date&page[size]=20';
 
             try {
-                const resFed = await fetch(PROXY + encodeURIComponent('https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFF'));
-                if (resFed.ok) {
-                    const textFed = await resFed.text();
-                    const linesFed = textFed.trim().split('\n');
-                    const lastLineFed = linesFed[linesFed.length - 1].split(',');
-                    const valFed = parseFloat(lastLineFed[1]);
-                    if (!isNaN(valFed)) {
-                        liveBenchmarkRates['fed'] = valFed;
-                        liveBenchmarkRates['prime'] = valFed + 3.00;
+                const res = await fetch(endpoint);
+                if (!res.ok) throw new Error(`Treasury API Error: ${res.status}`);
+
+                const result = await res.json();
+                const records = result.data;
+
+                if (records && records.length > 0) {
+                    const latestDate = records[0].record_date;
+                    const latestRecords = records.filter(r => r.record_date === latestDate);
+
+                    let shortTermRate = null;
+                    let longTermRate = null;
+
+                    latestRecords.forEach(item => {
+                        const rate = parseFloat(item.avg_interest_rate_amt);
+                        const desc = item.security_desc.toLowerCase();
+
+                        if (desc.includes('treasury bills')) {
+                            shortTermRate = rate;
+                        } else if (desc.includes('treasury bonds') || desc.includes('treasury notes')) {
+                            longTermRate = rate;
+                        }
+                    });
+
+                    if (!shortTermRate) shortTermRate = parseFloat(records[0].avg_interest_rate_amt);
+                    if (!longTermRate) longTermRate = shortTermRate + 1.25;
+
+                    const primeEst = shortTermRate + 3.00;
+                    const mortgage30Est = longTermRate + 2.10;
+                    const mortgage15Est = mortgage30Est - 0.75;
+
+                    document.getElementById('hub-rate-fed').textContent = formatPercent(shortTermRate);
+                    document.getElementById('hub-rate-prime').textContent = formatPercent(primeEst);
+                    document.getElementById('hub-rate-30yr').textContent = formatPercent(mortgage30Est);
+                    document.getElementById('hub-rate-15yr').textContent = formatPercent(mortgage15Est);
+
+                    if (timestampEl) {
+                        timestampEl.textContent = `U.S. Treasury (${latestDate})`;
                     }
                 }
-
-                const res30 = await fetch(PROXY + encodeURIComponent('https://fred.stlouisfed.org/graph/fredgraph.csv?id=MORTGAGE30US'));
-                if (res30.ok) {
-                    const text30 = await res30.text();
-                    const lines30 = text30.trim().split('\n');
-                    const lastLine30 = lines30[lines30.length - 1].split(',');
-                    const val30 = parseFloat(lastLine30[1]);
-                    if (!isNaN(val30)) liveBenchmarkRates['30yr'] = val30;
-                }
-
-                const res15 = await fetch(PROXY + encodeURIComponent('https://fred.stlouisfed.org/graph/fredgraph.csv?id=MORTGAGE15US'));
-                if (res15.ok) {
-                    const text15 = await res15.text();
-                    const lines15 = text15.trim().split('\n');
-                    const lastLine15 = lines15[lines15.length - 1].split(',');
-                    const val15 = parseFloat(lastLine15[1]);
-                    if (!isNaN(val15)) liveBenchmarkRates['15yr'] = val15;
-                }
-
-                if (rateFedEl) rateFedEl.textContent = formatPercent(liveBenchmarkRates['fed']);
-                if (ratePrimeEl) ratePrimeEl.textContent = formatPercent(liveBenchmarkRates['prime']);
-                if (rate30El) rate30El.textContent = formatPercent(liveBenchmarkRates['30yr']);
-                if (rate15El) rate15El.textContent = formatPercent(liveBenchmarkRates['15yr']);
-                if (timestampEl) timestampEl.textContent = 'FRED Live Data';
             } catch (err) {
-                console.warn('FRED live fetch fallback active:', err);
+                console.error('Error loading U.S. Treasury rates:', err);
+                if (timestampEl) timestampEl.textContent = 'API Error';
+            } finally {
+                if (iconEl) iconEl.classList.remove('animate-spin');
             }
         }
 
         function initData() {
-            const savedTools = localStorage.getItem('bharrys_custom_tools');
-            if (savedTools) {
-                try {
-                    toolsList = [...DEFAULT_TOOLS, ...JSON.parse(savedTools)];
-                } catch (e) {
-                    toolsList = [...DEFAULT_TOOLS];
-                }
-            } else {
-                toolsList = [...DEFAULT_TOOLS];
-            }
+            toolsList = [...DEFAULT_TOOLS];
 
             const savedPins = localStorage.getItem('bharrys_pinned_tools');
             if (savedPins) {
@@ -664,7 +528,7 @@
                 return true;
             });
 
-            renderPinnedSection(filtered);
+            renderPinnedSection();
             renderToolsGrid(filtered);
         }
 
@@ -676,7 +540,7 @@
             handleSearchFilter();
         }
 
-        function renderPinnedSection(allFilteredTools) {
+        function renderPinnedSection() {
             const container = document.getElementById('favorites-container');
             const grid = document.getElementById('favorites-grid');
             grid.innerHTML = '';
@@ -691,7 +555,7 @@
             container.classList.remove('hidden');
 
             pinnedTools.forEach(tool => {
-                grid.appendChild(createToolCard(tool, true));
+                grid.appendChild(createToolCard(tool));
             });
 
             if (window.lucide) lucide.createIcons();
@@ -713,14 +577,14 @@
                 emptyState.classList.add('hidden');
 
                 tools.forEach(tool => {
-                    grid.appendChild(createToolCard(tool, false));
+                    grid.appendChild(createToolCard(tool));
                 });
             }
 
             if (window.lucide) lucide.createIcons();
         }
 
-        function createToolCard(tool, isPinnedView) {
+        function createToolCard(tool) {
             const card = document.createElement('div');
             card.className = `glass-panel rounded-2xl p-5 space-y-4 flex flex-col justify-between glass-panel-hover relative group ${
                 tool.isLive ? 'border-slate-800' : 'border-slate-800/60 opacity-90'
@@ -806,10 +670,8 @@
             if (yearEl) yearEl.textContent = new Date().getFullYear();
             
             initData();
-            fetchMarketData();
-
-            // Refresh market figures every 15 seconds
-            setInterval(fetchMarketData, 15000);
+            fetchMarketIndices();
+            fetchTreasuryBenchmarkRates();
         });
     </script>
 </body>
