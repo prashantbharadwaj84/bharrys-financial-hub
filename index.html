@@ -141,12 +141,12 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2 self-start sm:self-auto">
-                        <button type="button" onclick="fetchMarketData()" title="Refresh Stock Data" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition border border-slate-700">
+                        <button type="button" onclick="fetchMarketIndices()" title="Refresh Stock Data" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition border border-slate-700">
                             <i data-lucide="refresh-cw" class="w-3.5 h-3.5" id="refresh-indices-icon"></i>
                         </button>
                         <div class="inline-flex items-center gap-1.5 text-[10px] font-mono px-2.5 py-1 rounded-full bg-slate-800 border border-slate-700/80 text-cyan-400">
                             <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                            <span id="market-status-time">Fetching Quotes...</span>
+                            <span id="market-status-time">Loading Market Data...</span>
                         </div>
                     </div>
                 </div>
@@ -156,16 +156,18 @@
                     <div class="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/60 relative overflow-hidden flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">S&P 500 Index</span>
-                                <span class="text-[9px] font-mono bg-slate-900 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">^GSPC</span>
+                                <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">S&P 500 ETF (SPY)</span>
+                                <span class="text-[9px] font-mono bg-slate-900 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">SPY</span>
                             </div>
                             <div class="flex items-baseline gap-2 mt-2">
-                                <span class="text-xl font-extrabold font-mono text-white" id="sp500-price">5,626.02</span>
-                                <span class="text-xs font-mono font-bold text-emerald-400 flex items-center gap-0.5" id="sp500-change-pill">
-                                    <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
-                                    <span id="sp500-change">+23.50 (+0.42%)</span>
+                                <span class="text-xl font-extrabold font-mono text-white" id="sp500-price">--</span>
+                                <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-0.5" id="sp500-change-pill">
+                                    <span id="sp500-change">--</span>
                                 </span>
                             </div>
+                        </div>
+                        <div class="mt-3">
+                            <svg id="sp500-sparkline" class="w-full h-6"></svg>
                         </div>
                     </div>
 
@@ -173,16 +175,18 @@
                     <div class="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/60 relative overflow-hidden flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">Dow Jones Industrial</span>
-                                <span class="text-[9px] font-mono bg-slate-900 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">^DJI</span>
+                                <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">Dow Jones ETF (DIA)</span>
+                                <span class="text-[9px] font-mono bg-slate-900 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">DIA</span>
                             </div>
                             <div class="flex items-baseline gap-2 mt-2">
-                                <span class="text-xl font-extrabold font-mono text-white" id="dow-price">41,393.78</span>
-                                <span class="text-xs font-mono font-bold text-emerald-400 flex items-center gap-0.5" id="dow-change-pill">
-                                    <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
-                                    <span id="dow-change">+75.20 (+0.18%)</span>
+                                <span class="text-xl font-extrabold font-mono text-white" id="dow-price">--</span>
+                                <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-0.5" id="dow-change-pill">
+                                    <span id="dow-change">--</span>
                                 </span>
                             </div>
+                        </div>
+                        <div class="mt-3">
+                            <svg id="dow-sparkline" class="w-full h-6"></svg>
                         </div>
                     </div>
 
@@ -190,16 +194,18 @@
                     <div class="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/60 relative overflow-hidden flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">Nasdaq Composite</span>
-                                <span class="text-[9px] font-mono bg-slate-900 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">^IXIC</span>
+                                <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">Nasdaq ETF (QQQ)</span>
+                                <span class="text-[9px] font-mono bg-slate-900 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">QQQ</span>
                             </div>
                             <div class="flex items-baseline gap-2 mt-2">
-                                <span class="text-xl font-extrabold font-mono text-white" id="nasdaq-price">17,683.98</span>
-                                <span class="text-xs font-mono font-bold text-emerald-400 flex items-center gap-0.5" id="nasdaq-change-pill">
-                                    <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
-                                    <span id="nasdaq-change">+114.30 (+0.65%)</span>
+                                <span class="text-xl font-extrabold font-mono text-white" id="nasdaq-price">--</span>
+                                <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-0.5" id="nasdaq-change-pill">
+                                    <span id="nasdaq-change">--</span>
                                 </span>
                             </div>
+                        </div>
+                        <div class="mt-3">
+                            <svg id="nasdaq-sparkline" class="w-full h-6"></svg>
                         </div>
                     </div>
                 </div>
@@ -293,70 +299,6 @@
         </div>
     </main>
 
-    <!-- Add Custom Tool Modal -->
-    <div id="add-tool-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-        <div class="glass-panel max-w-md w-full rounded-2xl p-6 space-y-4 border border-slate-700 shadow-2xl relative">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <div class="flex items-center gap-2 text-cyan-400">
-                    <i data-lucide="plus-circle" class="w-5 h-5"></i>
-                    <h3 class="text-base font-bold text-white">Add New Tool to Suite</h3>
-                </div>
-                <button type="button" onclick="closeAddToolModal()" class="text-slate-400 hover:text-white p-1">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <form id="add-tool-form" onsubmit="handleAddToolSubmit(event)" class="space-y-3 text-xs">
-                <div>
-                    <label class="block font-semibold text-slate-300 mb-1">Tool Title *</label>
-                    <input type="text" id="new-tool-title" required placeholder="e.g. Tax Bracket Calculator" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-cyan-500">
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block font-semibold text-slate-300 mb-1">Category *</label>
-                        <select id="new-tool-category" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-cyan-500">
-                            <option value="Mortgage & Loans">Mortgage & Loans</option>
-                            <option value="Savings & Yield">Savings & Yield</option>
-                            <option value="Investments">Investments</option>
-                            <option value="Taxes & Income">Taxes & Income</option>
-                            <option value="Other Tools">Other Tools</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-300 mb-1">Icon Name (Lucide)</label>
-                        <input type="text" id="new-tool-icon" placeholder="e.g. calculator, wallet, coins" value="calculator" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-cyan-500">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block font-semibold text-slate-300 mb-1">Hosted URL *</label>
-                    <input type="url" id="new-tool-url" required placeholder="https://yourtool.bharrys.com/" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-cyan-500">
-                </div>
-
-                <div>
-                    <label class="block font-semibold text-slate-300 mb-1">Description *</label>
-                    <textarea id="new-tool-desc" required rows="2" placeholder="Brief explanation of what this tool calculates..." class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-cyan-500"></textarea>
-                </div>
-
-                <div>
-                    <label class="block font-semibold text-slate-300 mb-1">Tags (Comma Separated)</label>
-                    <input type="text" id="new-tool-tags" placeholder="e.g. Taxes, IRS, Deductions" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-cyan-500">
-                </div>
-
-                <div class="flex items-center gap-2 pt-2">
-                    <input type="checkbox" id="new-tool-is-live" checked class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-cyan-500">
-                    <label for="new-tool-is-live" class="font-semibold text-slate-300 select-none">Mark as Live & Active</label>
-                </div>
-
-                <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
-                    <button type="button" onclick="closeAddToolModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold hover:bg-slate-700 transition">Cancel</button>
-                    <button type="submit" class="px-4 py-2 rounded-xl bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition">Add Tool</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <footer class="border-t border-slate-800/80 bg-[#090d16] text-slate-500 text-xs py-6 mt-auto">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
             <p>&copy; <span id="year"></span> Bharrys Ventures. Future is now.</p>
@@ -371,6 +313,10 @@
     </footer>
 
     <script>
+        // Finnhub API Key for reliable live stock quotes
+        const FINNHUB_API_KEY = 'dam6odhr01qvokaq5600dam6odhr01qvokaq560g';
+        const PROXY = 'https://corsproxy.io/?';
+
         // Initial core dataset of financial tools
         const DEFAULT_TOOLS = [
             {
@@ -459,85 +405,70 @@
             'prime': 8.33
         };
 
-        // Stock Market Indices State
+        // Stock Market Indices State (Real-Time Tracker)
         let liveStockIndices = {
-            sp500: { price: 5626.02, change: 23.50, percent: 0.42, history: [5580, 5595, 5602, 5590, 5612, 5618, 5626.02] },
-            dow: { price: 41393.78, change: 75.20, percent: 0.18, history: [41100, 41150, 41280, 41200, 41300, 41350, 41393.78] },
-            nasdaq: { price: 17683.98, change: 114.30, percent: 0.65, history: [17450, 17500, 17580, 17520, 17600, 17640, 17683.98] }
+            sp500: { price: 0, change: 0, percent: 0, history: [] },
+            dow: { price: 0, change: 0, percent: 0, history: [] },
+            nasdaq: { price: 0, change: 0, percent: 0, history: [] }
         };
 
         const formatPercent = (val) => `${val.toFixed(2)}%`;
         const formatNumber = (num, decimals = 2) => num.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 
+        // Fetch Live Market Quotes via Finnhub API
         async function fetchMarketIndices() {
             const statusEl = document.getElementById('market-status-time');
             const iconEl = document.getElementById('refresh-indices-icon');
             if (iconEl) iconEl.classList.add('animate-spin');
 
+            const indexMap = [
+                { key: 'sp500', ticker: 'SPY' },
+                { key: 'dow', ticker: 'DIA' },
+                { key: 'nasdaq', ticker: 'QQQ' }
+            ];
+
             try {
-                // Fetch FRED Stock Indices (SP500, DJIA, NASDAQCOM)
-                const [spRes, djRes, nasRes] = await Promise.allSettled([
-                    fetch('https://fred.stlouisfed.org/graph/fredgraph.csv?id=SP500'),
-                    fetch('https://fred.stlouisfed.org/graph/fredgraph.csv?id=DJIA'),
-                    fetch('https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM')
-                ]);
+                await Promise.all(indexMap.map(async (item) => {
+                    const endpoint = `https://finnhub.io/api/v1/quote?symbol=${item.ticker}&token=${FINNHUB_API_KEY}`;
+                    const res = await fetch(endpoint);
+                    
+                    if (!res.ok) throw new Error('Network error fetching Finnhub quotes');
+                    
+                    const data = await res.json();
+                    
+                    if (data && data.c && data.c !== 0) {
+                        const currentPrice = data.c;
+                        const change = data.d;
+                        const percent = data.dp;
+                        const history = [data.pc, data.l, data.h, currentPrice];
 
-                if (spRes.status === 'fulfilled' && spRes.value.ok) {
-                    const text = await spRes.value.text();
-                    parseFredCsvData(text, 'sp500');
-                }
-                if (djRes.status === 'fulfilled' && djRes.value.ok) {
-                    const text = await djRes.value.text();
-                    parseFredCsvData(text, 'dow');
-                }
-                if (nasRes.status === 'fulfilled' && nasRes.value.ok) {
-                    const text = await nasRes.value.text();
-                    parseFredCsvData(text, 'nasdaq');
-                }
+                        liveStockIndices[item.key] = {
+                            price: currentPrice,
+                            change: change,
+                            percent: percent,
+                            history: history
+                        };
+                    }
+                }));
 
-                if (statusEl) statusEl.textContent = 'FRED Market Live';
+                if (statusEl) {
+                    const now = new Date();
+                    statusEl.textContent = `Live Data ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                }
             } catch (err) {
-                console.warn('FRED market index fetch fallback active:', err);
-                if (statusEl) statusEl.textContent = 'Market Benchmarks';
+                console.error('Failed to fetch real-time index values:', err);
+                if (statusEl) statusEl.textContent = 'API Error / Check Token';
             } finally {
                 if (iconEl) iconEl.classList.remove('animate-spin');
                 renderStockIndices();
             }
         }
 
-        function parseFredCsvData(csvText, key) {
-            const lines = csvText.trim().split('\n');
-            const records = [];
-
-            for (let i = 1; i < lines.length; i++) {
-                const parts = lines[i].split(',');
-                if (parts.length >= 2) {
-                    const val = parseFloat(parts[1]);
-                    if (!isNaN(val) && val > 0) {
-                        records.push(val);
-                    }
-                }
-            }
-
-            if (records.length >= 2) {
-                const latest = records[records.length - 1];
-                const previous = records[records.length - 2];
-                const change = latest - previous;
-                const percent = (change / previous) * 100;
-                const recentHistory = records.slice(-10);
-
-                liveStockIndices[key] = {
-                    price: latest,
-                    change: change,
-                    percent: percent,
-                    history: recentHistory
-                };
-            }
-        }
-
         function renderStockIndices() {
             ['sp500', 'dow', 'nasdaq'].forEach(key => {
                 const data = liveStockIndices[key];
+                if (!data || data.price === 0) return;
+
                 const isPositive = data.change >= 0;
 
                 const priceEl = document.getElementById(`${key}-price`);
@@ -558,7 +489,6 @@
                     `;
                 }
 
-                // Render SVG Sparkline
                 renderSparkline(`${key}-sparkline`, data.history, isPositive);
             });
 
@@ -585,6 +515,7 @@
 
             const strokeColor = isPositive ? '#34d399' : '#f87171';
             
+            svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
             svg.innerHTML = `
                 <polyline
                     fill="none"
@@ -610,8 +541,7 @@
             const rate15El = document.getElementById('hub-rate-15yr');
 
             try {
-                // Fetch Daily Effective Federal Funds Rate (DFF) from FRED
-                const resFed = await fetch('https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFF');
+                const resFed = await fetch(PROXY + encodeURIComponent('https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFF'));
                 if (resFed.ok) {
                     const textFed = await resFed.text();
                     const linesFed = textFed.trim().split('\n');
@@ -623,8 +553,7 @@
                     }
                 }
 
-                // Fetch 30-Yr Fixed FRED rate
-                const res30 = await fetch('https://fred.stlouisfed.org/graph/fredgraph.csv?id=MORTGAGE30US');
+                const res30 = await fetch(PROXY + encodeURIComponent('https://fred.stlouisfed.org/graph/fredgraph.csv?id=MORTGAGE30US'));
                 if (res30.ok) {
                     const text30 = await res30.text();
                     const lines30 = text30.trim().split('\n');
@@ -633,8 +562,7 @@
                     if (!isNaN(val30)) liveBenchmarkRates['30yr'] = val30;
                 }
 
-                // Fetch 15-Yr Fixed FRED rate
-                const res15 = await fetch('https://fred.stlouisfed.org/graph/fredgraph.csv?id=MORTGAGE15US');
+                const res15 = await fetch(PROXY + encodeURIComponent('https://fred.stlouisfed.org/graph/fredgraph.csv?id=MORTGAGE15US'));
                 if (res15.ok) {
                     const text15 = await res15.text();
                     const lines15 = text15.trim().split('\n');
@@ -649,22 +577,15 @@
                 if (rate15El) rate15El.textContent = formatPercent(liveBenchmarkRates['15yr']);
                 if (timestampEl) timestampEl.textContent = 'FRED Live Data';
             } catch (err) {
-                console.warn('FRED live fetch fallback to current benchmarks:', err);
-                if (rateFedEl) rateFedEl.textContent = formatPercent(liveBenchmarkRates['fed']);
-                if (ratePrimeEl) ratePrimeEl.textContent = formatPercent(liveBenchmarkRates['prime']);
-                if (rate30El) rate30El.textContent = formatPercent(liveBenchmarkRates['30yr']);
-                if (rate15El) rate15El.textContent = formatPercent(liveBenchmarkRates['15yr']);
-                if (timestampEl) timestampEl.textContent = 'FRED Benchmark';
+                console.warn('FRED live fetch fallback active:', err);
             }
         }
 
-        // Load persisted tools and favorites from LocalStorage
         function initData() {
             const savedTools = localStorage.getItem('bharrys_custom_tools');
             if (savedTools) {
                 try {
-                    const parsed = JSON.parse(savedTools);
-                    toolsList = [...DEFAULT_TOOLS, ...parsed];
+                    toolsList = [...DEFAULT_TOOLS, ...JSON.parse(savedTools)];
                 } catch (e) {
                     toolsList = [...DEFAULT_TOOLS];
                 }
@@ -686,7 +607,6 @@
             updateStats();
         }
 
-        // Save Pinned state
         function togglePin(toolId, event) {
             if (event) event.stopPropagation();
             if (pinnedToolIds.has(toolId)) {
@@ -698,7 +618,6 @@
             handleSearchFilter();
         }
 
-        // Render Category Filter Buttons
         function renderCategories() {
             const categories = ['All', ...new Set(toolsList.map(t => t.category))];
             const container = document.getElementById('category-pills');
@@ -722,7 +641,6 @@
             });
         }
 
-        // Filter and Search Handler
         function handleSearchFilter() {
             const query = document.getElementById('search-input').value.toLowerCase().trim();
             const liveOnly = document.getElementById('toggle-live-only').checked;
@@ -734,11 +652,8 @@
             }
 
             const filtered = toolsList.filter(tool => {
-                // Category match
                 if (activeCategory !== 'All' && tool.category !== activeCategory) return false;
-                // Live match
                 if (liveOnly && !tool.isLive) return false;
-                // Query match
                 if (query) {
                     const matchTitle = tool.title.toLowerCase().includes(query);
                     const matchDesc = tool.description.toLowerCase().includes(query);
@@ -761,7 +676,6 @@
             handleSearchFilter();
         }
 
-        // Render Pinned/Favorites Header
         function renderPinnedSection(allFilteredTools) {
             const container = document.getElementById('favorites-container');
             const grid = document.getElementById('favorites-grid');
@@ -783,7 +697,6 @@
             if (window.lucide) lucide.createIcons();
         }
 
-        // Render Tool Grid Cards
         function renderToolsGrid(tools) {
             const grid = document.getElementById('tools-grid');
             const emptyState = document.getElementById('empty-state');
@@ -807,7 +720,6 @@
             if (window.lucide) lucide.createIcons();
         }
 
-        // Create HTML Element for Card
         function createToolCard(tool, isPinnedView) {
             const card = document.createElement('div');
             card.className = `glass-panel rounded-2xl p-5 space-y-4 flex flex-col justify-between glass-panel-hover relative group ${
@@ -827,7 +739,6 @@
 
             card.innerHTML = `
                 <div class="space-y-3">
-                    <!-- Top Bar: Category & Pin -->
                     <div class="flex items-center justify-between">
                         <span class="text-[10px] uppercase font-mono tracking-wider text-slate-400 bg-slate-900 px-2.5 py-1 rounded-full border border-slate-800">
                             ${tool.category}
@@ -843,7 +754,6 @@
                         </div>
                     </div>
 
-                    <!-- Header & Icon -->
                     <div class="flex items-start gap-3 pt-1">
                         <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-700/60 text-cyan-400 group-hover:scale-105 transition">
                             <i data-lucide="${tool.icon || 'calculator'}" class="w-5 h-5"></i>
@@ -854,7 +764,6 @@
                         </div>
                     </div>
 
-                    <!-- Tags -->
                     <div class="flex flex-wrap gap-1.5 pt-1">
                         ${tool.tags.map(tag => `
                             <span class="text-[10px] font-medium text-slate-400 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800/60">
@@ -864,7 +773,6 @@
                     </div>
                 </div>
 
-                <!-- Action Button -->
                 <div class="pt-3 border-t border-slate-800/80">
                     ${tool.isLive ? `
                         <a href="${tool.url}" target="_blank" rel="noopener noreferrer" class="w-full px-4 py-2 text-xs font-bold rounded-xl bg-slate-800 hover:bg-cyan-500 hover:text-black text-cyan-400 border border-slate-700/80 transition flex items-center justify-center gap-2 group/btn">
@@ -883,7 +791,6 @@
             return card;
         }
 
-        // Stats update
         function updateStats() {
             const activeCount = toolsList.filter(t => t.isLive).length;
             const activeEl = document.getElementById('stat-active-count');
@@ -893,67 +800,16 @@
             if (totalEl) totalEl.textContent = `${toolsList.length} Tools`;
         }
 
-        // Modal functions for adding custom tool
-        function openAddToolModal() {
-            document.getElementById('add-tool-modal').classList.remove('hidden');
-        }
-
-        function closeAddToolModal() {
-            document.getElementById('add-tool-modal').classList.add('hidden');
-            document.getElementById('add-tool-form').reset();
-        }
-
-        function handleAddToolSubmit(event) {
-            event.preventDefault();
-
-            const title = document.getElementById('new-tool-title').value.trim();
-            const category = document.getElementById('new-tool-category').value;
-            const icon = document.getElementById('new-tool-icon').value.trim() || 'calculator';
-            const url = document.getElementById('new-tool-url').value.trim();
-            const description = document.getElementById('new-tool-desc').value.trim();
-            const tagsRaw = document.getElementById('new-tool-tags').value.trim();
-            const isLive = document.getElementById('new-tool-is-live').checked;
-
-            const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [category];
-
-            const newTool = {
-                id: 'custom-' + Date.now(),
-                title,
-                category,
-                badge: isLive ? 'Live' : 'Planned',
-                badgeColor: isLive ? 'cyan' : 'amber',
-                url,
-                icon,
-                description,
-                tags,
-                isLive
-            };
-
-            toolsList.unshift(newTool);
-
-            // Persist custom tools
-            const existingCustom = JSON.parse(localStorage.getItem('bharrys_custom_tools') || '[]');
-            existingCustom.unshift(newTool);
-            localStorage.setItem('bharrys_custom_tools', JSON.stringify(existingCustom));
-
-            closeAddToolModal();
-            renderCategories();
-            handleSearchFilter();
-            updateStats();
-        }
-
-        // Initialize application on load
         window.addEventListener('DOMContentLoaded', () => {
             if (window.lucide) lucide.createIcons();
             const yearEl = document.getElementById('year');
             if (yearEl) yearEl.textContent = new Date().getFullYear();
             
             initData();
-            fetchFredBenchmarkRates();
-            fetchMarketIndices();
+            fetchMarketData();
 
-            // Auto refresh market data every 60 seconds
-            setInterval(fetchMarketData, 60000);
+            // Refresh market figures every 15 seconds
+            setInterval(fetchMarketData, 15000);
         });
     </script>
 </body>
