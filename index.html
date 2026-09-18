@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bharrys Financial Suite - Tools & Calculators</title>
-    <!-- GoatCounter Analytics Tracker -->
-    <script data-goatcounter="https://bharrys.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+    <!-- GoatCounter Analytics Tracker with Load/Error Handlers -->
+    <script 
+        data-goatcounter="https://bharrys.goatcounter.com/count" 
+        async 
+        src="//gc.zgo.at/count.js" 
+        id="goatcounter-script"
+        onload="window.goatcounterLoaded = true;"
+        onerror="window.goatcounterBlocked = true;">
+    </script>
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
@@ -65,6 +74,23 @@
     </style>
 </head>
 <body class="min-h-full flex flex-col font-sans antialiased selection:bg-cyan-500 selection:text-black bg-[#090d16] text-slate-100">
+
+    <!-- Ad-Blocker / Privacy Shield Detection Banner (Hidden by default) -->
+    <div id="adblock-banner" class="hidden relative z-50 bg-amber-500/10 border-b border-amber-500/30 text-amber-200 px-4 py-2.5 text-xs">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <i data-lucide="shield-alert" class="w-4 h-4 text-amber-400 shrink-0"></i>
+                <p>
+                    <strong class="font-semibold text-amber-300">Privacy Shield / Ad Blocker Active:</strong> 
+                    Analytics requests are being blocked by your browser or extension. Please whitelist <code class="bg-amber-950/60 px-1 py-0.5 rounded text-amber-300">goatcounter.com</code> to display live visitor stats.
+                </p>
+            </div>
+            <button type="button" onclick="dismissAdBlockBanner()" class="text-amber-400 hover:text-white p-1 rounded-lg transition shrink-0 flex items-center gap-1 font-semibold">
+                <span>Dismiss</span>
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </div>
 
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div class="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
@@ -164,7 +190,7 @@
                     </div>
                 </div>
 
-                <!-- Live Market Benchmark Rates Card (Real-Time 10-Yr Spread Logic) -->
+                <!-- Live Market Benchmark Rates Card -->
                 <div class="p-4 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-3">
                     <div class="flex items-center justify-between gap-2">
                         <div class="flex items-center gap-2">
@@ -270,7 +296,6 @@
     </footer>
 
     <script>
-        // Finnhub API Key & GoatCounter Config
         const FINNHUB_API_KEY = 'dam6odhr01qvokaq5600dam6odhr01qvokaq560g';
         const GOATCOUNTER_SITE = 'bharrys.goatcounter.com';
 
@@ -355,23 +380,66 @@
 
         const formatPercent = (val) => `${val.toFixed(2)}%`;
 
-        // GoatCounter Public API Fetcher
+        // Strict Ad-Blocker & Privacy Shield Detection
+        function detectAdBlocker() {
+            if (sessionStorage.getItem('dismissed_adblock_notice')) {
+                return;
+            }
+
+            // Check if GoatCounter loaded or was confirmed blocked by browser onerror event
+            if (window.goatcounterLoaded || (window.goatcounter && window.goatcounter.count)) {
+                return;
+            }
+
+            if (window.goatcounterBlocked) {
+                showAdBlockBanner();
+                return;
+            }
+
+            // Fallback Bait Test
+            const bait = document.createElement('div');
+            bait.className = 'pub_300x250 pub_300x250m pub_728x90 text-ad ad-text ad-unit text-ads';
+            bait.style.cssText = 'width: 1px !important; height: 1px !important; position: absolute !important; left: -10000px !important; top: -10000px !important;';
+            document.body.appendChild(bait);
+
+            setTimeout(() => {
+                const isBaitBlocked = bait.offsetParent === null || bait.offsetHeight === 0 || bait.offsetWidth === 0;
+                if (bait.parentNode) bait.parentNode.removeChild(bait);
+
+                // Only show banner if bait element was explicitly hidden or GoatCounter failed completely
+                if (isBaitBlocked && !window.goatcounterLoaded) {
+                    showAdBlockBanner();
+                }
+            }, 150);
+        }
+
+        function showAdBlockBanner() {
+            const banner = document.getElementById('adblock-banner');
+            if (banner) {
+                banner.classList.remove('hidden');
+            }
+        }
+
+        function dismissAdBlockBanner() {
+            const banner = document.getElementById('adblock-banner');
+            if (banner) banner.classList.add('hidden');
+            sessionStorage.setItem('dismissed_adblock_notice', 'true');
+        }
+
+        // Fetch GoatCounter Public Stats
         async function fetchGoatCounterVisits() {
             const visitEl = document.getElementById('stat-visit-count');
             try {
-                // Fetch total visits for the entire site domain
                 const res = await fetch(`https://${GOATCOUNTER_SITE}/counter/TOTAL.json`);
                 if (!res.ok) throw new Error(`GoatCounter HTTP error: ${res.status}`);
                 
                 const data = await res.json();
                 
                 if (visitEl && data.count !== undefined) {
-                    // Strips potential non-numeric characters from the returned string
                     const formattedCount = parseInt(data.count.replace(/[^0-9]/g, ''), 10);
                     visitEl.textContent = formattedCount.toLocaleString();
                 }
             } catch (err) {
-                console.error('Error fetching GoatCounter stats:', err);
                 if (visitEl) {
                     visitEl.textContent = 'Active';
                 }
@@ -417,14 +485,13 @@
                     timestampEl.textContent = `Live ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
                 }
             } catch (err) {
-                console.error('Error fetching market indices from Finnhub:', err);
                 if (timestampEl) timestampEl.textContent = 'API Error';
             } finally {
                 if (iconEl) iconEl.classList.remove('animate-spin');
             }
         }
 
-        // Real-Time Mortgage Calculation Engine Using Live 10-Year Treasury Yield
+        // Live Mortgage Rates Calculation Engine
         async function fetchLiveMortgageRates() {
             const timestampEl = document.getElementById('rate-timestamp');
             const iconEl = document.getElementById('refresh-rates-icon');
@@ -460,7 +527,6 @@
                     timestampEl.textContent = `Live ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
                 }
             } catch (err) {
-                console.error('Error calculating live mortgage rates:', err);
                 if (timestampEl) timestampEl.textContent = 'Calc Error';
             } finally {
                 if (iconEl) iconEl.classList.remove('animate-spin');
@@ -688,6 +754,9 @@
             initData();
             fetchMarketIndices();
             fetchLiveMortgageRates();
+
+            // Run detection check after initial DOM render
+            setTimeout(detectAdBlocker, 1500);
         });
     </script>
 </body>
