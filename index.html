@@ -124,10 +124,6 @@
             </div>
             
             <div class="max-w-3xl space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-700/80 text-xs font-medium text-slate-300">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>Live Production Suite</span>
-                </div>
                 <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
                     Smart Financial tools for <span class="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">Smarter Decisions</span>
                 </h2>
@@ -138,22 +134,29 @@
 
             <!-- Stats Bar -->
             <div class="mt-8 pt-6 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+                <!-- 1. Live Tools -->
                 <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
                     <p class="text-slate-400 font-medium">Live Tools</p>
                     <p class="text-xl font-bold font-mono text-cyan-400 mt-1" id="stat-active-count">0 Active</p>
                 </div>
+                <!-- 2. Planned Suite -->
                 <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
                     <p class="text-slate-400 font-medium">Planned Suite</p>
                     <p class="text-xl font-bold font-mono text-indigo-400 mt-1" id="stat-planned-count">0 Planned</p>
                 </div>
-                <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
-                    <p class="text-slate-400 font-medium">Data Privacy</p>
-                    <p class="text-xl font-bold font-mono text-emerald-400 mt-1">100% Client-side</p>
-                </div>
+                <!-- 3. Total Site Visits -->
                 <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
                     <p class="text-slate-400 font-medium">Total Site Visits</p>
                     <p class="text-xl font-bold font-mono text-white mt-1" id="stat-visit-count">Loading...</p>
                 </div>
+                <!-- 4. Support Developer -->
+                <a href="https://buymeacoffee.com/bharrys" target="_blank" rel="noopener noreferrer" class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/90 transition group flex flex-col justify-between">
+                    <p class="text-slate-400 font-medium group-hover:text-amber-300 transition">Support Developer</p>
+                    <div class="flex items-center gap-1.5 mt-1 text-amber-400 font-bold font-mono text-base">
+                        <i data-lucide="coffee" class="w-4 h-4"></i>
+                        <span>Buy Me a Coffee</span>
+                    </div>
+                </a>
             </div>
 
             <!-- Dynamic Market Indices & Live Interest Rates Grid -->
