@@ -164,7 +164,7 @@
                     <div class="flex items-center justify-between gap-2">
                         <div class="flex items-center gap-2">
                             <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
-                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Market Indices</h3>
+                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Live U.S. Stock Market</h3>
                             <span class="text-[10px] font-mono text-slate-400" id="market-timestamp">Finnhub Live</span>
                         </div>
                         <button type="button" onclick="fetchMarketIndices()" title="Refresh Market Data" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition border border-slate-700">
@@ -386,7 +386,6 @@
                 return;
             }
 
-            // Check if GoatCounter loaded or was confirmed blocked by browser onerror event
             if (window.goatcounterLoaded || (window.goatcounter && window.goatcounter.count)) {
                 return;
             }
@@ -396,7 +395,6 @@
                 return;
             }
 
-            // Fallback Bait Test
             const bait = document.createElement('div');
             bait.className = 'pub_300x250 pub_300x250m pub_728x90 text-ad ad-text ad-unit text-ads';
             bait.style.cssText = 'width: 1px !important; height: 1px !important; position: absolute !important; left: -10000px !important; top: -10000px !important;';
@@ -406,7 +404,6 @@
                 const isBaitBlocked = bait.offsetParent === null || bait.offsetHeight === 0 || bait.offsetWidth === 0;
                 if (bait.parentNode) bait.parentNode.removeChild(bait);
 
-                // Only show banner if bait element was explicitly hidden or GoatCounter failed completely
                 if (isBaitBlocked && !window.goatcounterLoaded) {
                     showAdBlockBanner();
                 }
@@ -531,6 +528,15 @@
             } finally {
                 if (iconEl) iconEl.classList.remove('animate-spin');
             }
+        }
+
+        // Routine to auto refresh live market and rate data
+        function startAutoRefreshRoutine() {
+            const REFRESH_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes in milliseconds
+            setInterval(() => {
+                fetchMarketIndices();
+                fetchLiveMortgageRates();
+            }, REFRESH_INTERVAL_MS);
         }
 
         function initData() {
@@ -754,8 +760,11 @@
             initData();
             fetchMarketIndices();
             fetchLiveMortgageRates();
+            
+            // Start 5-minute auto refresh routine
+            startAutoRefreshRoutine();
 
-            // Run detection check after initial DOM render
+            // Run ad-blocker detection check after initial DOM render
             setTimeout(detectAdBlocker, 1500);
         });
     </script>
