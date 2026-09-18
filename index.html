@@ -188,8 +188,8 @@
                             <span class="text-sm font-extrabold text-indigo-400 mt-0.5" id="hub-rate-10yr">Loading...</span>
                         </div>
                         <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
-                            <span class="text-[10px] text-slate-400">Prime Rate</span>
-                            <span class="text-sm font-extrabold text-emerald-400 mt-0.5" id="hub-rate-prime">Loading...</span>
+                            <span class="text-[10px] text-slate-400">Inflation (CPI)</span>
+                            <span class="text-sm font-extrabold text-emerald-400 mt-0.5" id="hub-rate-cpi">Loading...</span>
                         </div>
                     </div>
                 </div>
@@ -421,12 +421,14 @@
                 const marketSpread = 2.75;
                 const mortgage30Est = raw10YrYield + marketSpread;
                 const mortgage15Est = mortgage30Est - 0.65; // 15-Yr is typically ~0.65% lower
-                const primeRateEst = raw10YrYield + 3.75;    // Prime rate benchmark offset
+                const cpiRate = 3.40;                       // Annual CPI Inflation Rate benchmark
 
                 document.getElementById('hub-rate-10yr').textContent = formatPercent(raw10YrYield);
                 document.getElementById('hub-rate-30yr').textContent = formatPercent(mortgage30Est);
                 document.getElementById('hub-rate-15yr').textContent = formatPercent(mortgage15Est);
-                document.getElementById('hub-rate-prime').textContent = formatPercent(primeRateEst);
+                
+                const cpiEl = document.getElementById('hub-rate-cpi');
+                if (cpiEl) cpiEl.textContent = formatPercent(cpiRate);
 
                 if (timestampEl) {
                     const now = new Date();
