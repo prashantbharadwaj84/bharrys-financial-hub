@@ -134,22 +134,18 @@
 
             <!-- Stats Bar -->
             <div class="mt-8 pt-6 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-                <!-- 1. Live Tools -->
                 <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
                     <p class="text-slate-400 font-medium">Live Tools</p>
                     <p class="text-xl font-bold font-mono text-cyan-400 mt-1" id="stat-active-count">0 Active</p>
                 </div>
-                <!-- 2. Planned Suite -->
                 <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
                     <p class="text-slate-400 font-medium">Planned Suite</p>
                     <p class="text-xl font-bold font-mono text-indigo-400 mt-1" id="stat-planned-count">0 Planned</p>
                 </div>
-                <!-- 3. Total Site Visits -->
                 <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
                     <p class="text-slate-400 font-medium">Total Site Visits</p>
                     <p class="text-xl font-bold font-mono text-white mt-1" id="stat-visit-count">Loading...</p>
                 </div>
-                <!-- 4. Support Developer -->
                 <a href="https://buymeacoffee.com/bharrys" target="_blank" rel="noopener noreferrer" class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/90 transition group flex flex-col justify-between">
                     <p class="text-slate-400 font-medium group-hover:text-amber-300 transition">Support Developer</p>
                     <div class="flex items-center gap-1.5 mt-1 text-amber-400 font-bold font-mono text-base">
@@ -396,10 +392,22 @@
                 category: 'Taxes',
                 badge: 'Live',
                 badgeColor: 'cyan',
-                url: 'https://marcsvehiclecalc.bharrys.com/',
+                url: 'https://macrsvehiclecalc.bharrys.com/',
                 icon: 'car',
                 description: 'Calculate Section 179 deductions, MACRS business vehicle depreciation schedules, and tax-saving write-offs for enterprise usage.',
                 tags: ['Car', 'Depreciation', 'Business', 'Tax', 'MACRS', 'Section 179'],
+                isLive: true
+            },
+            {
+                id: 'real-estate-depreciation-business',
+                title: 'MACRS Real Estate Investment Calculator',
+                category: 'Taxes',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://macrsrealestatecalc.bharrys.com/',
+                icon: 'building-2',
+                description: 'Calculate IRS Pub 527 real estate depreciation (27.5-yr residential & 39-yr commercial), land cost allocations, mid-month convention, and annual tax shields.',
+                tags: ['Real Estate', 'Property', 'Depreciation', 'Tax', 'MACRS', 'Pub 527', 'Investment'],
                 isLive: true
             },
             {
@@ -446,7 +454,6 @@
 
         const formatPercent = (val) => `${val.toFixed(2)}%`;
 
-        // Strict Ad-Blocker & Privacy Shield Detection
         function detectAdBlocker() {
             if (sessionStorage.getItem('dismissed_adblock_notice')) {
                 return;
@@ -489,7 +496,6 @@
             sessionStorage.setItem('dismissed_adblock_notice', 'true');
         }
 
-        // Fetch GoatCounter Public Stats
         async function fetchGoatCounterVisits() {
             const visitEl = document.getElementById('stat-visit-count');
             try {
@@ -509,7 +515,6 @@
             }
         }
 
-        // Finnhub Fetch for Stock Market Indices
         async function fetchMarketIndices() {
             const iconEl = document.getElementById('refresh-market-icon');
             const timestampEl = document.getElementById('market-timestamp');
@@ -554,7 +559,6 @@
             }
         }
 
-        // Live Mortgage Rates Calculation Engine
         async function fetchLiveMortgageRates() {
             const timestampEl = document.getElementById('rate-timestamp');
             const iconEl = document.getElementById('refresh-rates-icon');
@@ -596,9 +600,8 @@
             }
         }
 
-        // Routine to auto refresh live market and rate data
         function startAutoRefreshRoutine() {
-            const REFRESH_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes in milliseconds
+            const REFRESH_INTERVAL_MS = 5 * 60 * 1000;
             setInterval(() => {
                 fetchMarketIndices();
                 fetchLiveMortgageRates();
@@ -826,11 +829,8 @@
             initData();
             fetchMarketIndices();
             fetchLiveMortgageRates();
-            
-            // Start 5-minute auto refresh routine
             startAutoRefreshRoutine();
 
-            // Run ad-blocker detection check after initial DOM render
             setTimeout(detectAdBlocker, 1500);
         });
     </script>
