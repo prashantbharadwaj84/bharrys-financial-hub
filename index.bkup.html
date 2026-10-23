@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#090d16] text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharrys Financial Suite - Tools & Calculators</title>
+
+    <!-- GoatCounter Analytics Tracker with Load/Error Handlers -->
+    <script 
+        data-goatcounter="https://bharrys.goatcounter.com/count" 
+        async 
+        src="//gc.zgo.at/count.js" 
+        id="goatcounter-script"
+        onload="window.goatcounterLoaded = true;"
+        onerror="window.goatcounterBlocked = true;">
+    </script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#090d16',
+                            card: '#111827',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                            accent: '#38bdf8',
+                            purple: '#818cf8',
+                            emerald: '#34d399'
+                        }
+                    },
+                    boxShadow: {
+                        glow: '0 0 25px -5px rgba(56, 189, 248, 0.15)',
+                        'glow-purple': '0 0 25px -5px rgba(129, 140, 248, 0.2)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-panel-hover {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-panel-hover:hover {
+            border-color: rgba(56, 189, 248, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.12);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="min-h-full flex flex-col font-sans antialiased selection:bg-cyan-500 selection:text-black bg-[#090d16] text-slate-100">
+
+    <!-- Ad-Blocker / Privacy Shield Detection Banner (Hidden by default) -->
+    <div id="adblock-banner" class="hidden relative z-50 bg-amber-500/10 border-b border-amber-500/30 text-amber-200 px-4 py-2.5 text-xs">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <i data-lucide="shield-alert" class="w-4 h-4 text-amber-400 shrink-0"></i>
+                <p>
+                    <strong class="font-semibold text-amber-300">Privacy Shield / Ad Blocker Active:</strong> 
+                    Analytics requests are being blocked by your browser or extension. Please whitelist <code class="bg-amber-950/60 px-1 py-0.5 rounded text-amber-300">goatcounter.com</code> to display live visitor stats.
+                </p>
+            </div>
+            <button type="button" onclick="dismissAdBlockBanner()" class="text-amber-400 hover:text-white p-1 rounded-lg transition shrink-0 flex items-center gap-1 font-semibold">
+                <span>Dismiss</span>
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/3 -right-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <header class="relative z-10 border-b border-slate-800/80 bg-[#090d16]/80 backdrop-blur-md sticky top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-slate-900 border border-slate-700/60 rounded-xl text-cyan-400 shadow-glow">
+                    <i data-lucide="layout-grid" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl font-extrabold tracking-tight text-white font-mono">BHARRYS <span class="text-cyan-400">FINANCIAL</span></h1>
+                        <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-cyan-950/80 text-cyan-400 border border-cyan-800/50">SUITE</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-0.5">One stop toolkit to turn all your 'What-if's into 'What-next'</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Hero Banner & Stats Bar -->
+        <section class="glass-panel rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 opacity-5 text-cyan-400 pointer-events-none">
+                <i data-lucide="line-chart" class="w-80 h-80"></i>
+            </div>
+            
+            <div class="max-w-3xl space-y-4">
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                    Smart Financial tools for <span class="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">Smarter Decisions</span>
+                </h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Explore our suite of specialized financial models—ranging from mortgage amortization schedules with extra payment analysis to certificate of deposit APY compounding calculations.
+                </p>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="mt-8 pt-6 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+                <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+                    <p class="text-slate-400 font-medium">Live Tools</p>
+                    <p class="text-xl font-bold font-mono text-cyan-400 mt-1" id="stat-active-count">0 Active</p>
+                </div>
+                <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+                    <p class="text-slate-400 font-medium">Planned Suite</p>
+                    <p class="text-xl font-bold font-mono text-indigo-400 mt-1" id="stat-planned-count">0 Planned</p>
+                </div>
+                <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+                    <p class="text-slate-400 font-medium">Total Site Visits</p>
+                    <p class="text-xl font-bold font-mono text-white mt-1" id="stat-visit-count">Loading...</p>
+                </div>
+                <a href="https://buymeacoffee.com/bharrys" target="_blank" rel="noopener noreferrer" class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/90 transition group flex flex-col justify-between">
+                    <p class="text-slate-400 font-medium group-hover:text-amber-300 transition">Support Developer</p>
+                    <div class="flex items-center gap-1.5 mt-1 text-amber-400 font-bold font-mono text-base">
+                        <i data-lucide="coffee" class="w-4 h-4"></i>
+                        <span>Buy Me a Coffee</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Dynamic Market Indices & Live Interest Rates Grid -->
+            <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                
+                <!-- Finnhub Market Indices Card -->
+                <div class="p-4 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
+                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Live U.S. Stock Market</h3>
+                            <span class="text-[10px] font-mono text-slate-400" id="market-timestamp">Finnhub Live</span>
+                        </div>
+                        <button type="button" onclick="fetchMarketIndices()" title="Refresh Market Data" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition border border-slate-700">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5" id="refresh-market-icon"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-xs font-mono">
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">S&P 500 (SPY)</span>
+                            <span class="text-sm font-extrabold text-white mt-0.5" id="idx-spy-price">Loading...</span>
+                            <span class="text-[10px] mt-0.5 font-bold" id="idx-spy-change">--</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">Nasdaq (QQQ)</span>
+                            <span class="text-sm font-extrabold text-white mt-0.5" id="idx-qqq-price">Loading...</span>
+                            <span class="text-[10px] mt-0.5 font-bold" id="idx-qqq-change">--</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">Dow (DIA)</span>
+                            <span class="text-sm font-extrabold text-white mt-0.5" id="idx-dia-price">Loading...</span>
+                            <span class="text-[10px] mt-0.5 font-bold" id="idx-dia-change">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Market Benchmark Rates Card -->
+                <div class="p-4 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="percent" class="w-4 h-4 text-cyan-400"></i>
+                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Retail Benchmark Rates</h3>
+                            <span class="text-[10px] font-mono text-slate-400" id="rate-timestamp">Finnhub Yield Engine</span>
+                        </div>
+                        <button type="button" onclick="fetchLiveMortgageRates()" title="Refresh Rates" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition border border-slate-700">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5" id="refresh-rates-icon"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2 text-xs font-mono">
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">30-Yr Fixed</span>
+                            <span class="text-sm font-extrabold text-cyan-400 mt-0.5" id="hub-rate-30yr">Loading...</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">15-Yr Fixed</span>
+                            <span class="text-sm font-extrabold text-cyan-400 mt-0.5" id="hub-rate-15yr">Loading...</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">10-Yr Treasury</span>
+                            <span class="text-sm font-extrabold text-indigo-400 mt-0.5" id="hub-rate-10yr">Loading...</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-400">Inflation (CPI)</span>
+                            <span class="text-sm font-extrabold text-emerald-400 mt-0.5" id="hub-rate-cpi">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Search, Filter & Categories Toolbar -->
+        <div class="glass-panel rounded-2xl p-4 sm:p-5 space-y-4">
+            <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+                <!-- Search Input -->
+                <div class="relative flex-1">
+                    <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="search-input" oninput="handleSearchFilter()" placeholder="Search tools by name, tag, or description..." class="w-full pl-10 pr-10 py-2.5 bg-slate-900/90 border border-slate-700/80 rounded-xl text-sm text-white placeholder-slate-500 outline-none focus:border-cyan-400 transition">
+                    <button type="button" id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-3 justify-between sm:justify-end">
+                    <!-- Filter Live Only Toggle -->
+                    <label class="flex items-center gap-2 cursor-pointer select-none text-xs text-slate-300">
+                        <input type="checkbox" id="toggle-live-only" onchange="handleSearchFilter()" class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-cyan-500 focus:ring-0 focus:ring-offset-0">
+                        <span>Live Tools Only</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Category Pills & Count -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2 border-t border-slate-800/60">
+                <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0" id="category-pills"></div>
+                <span class="text-xs font-mono text-slate-400 shrink-0" id="tools-counter">Showing 0 tools</span>
+            </div>
+        </div>
+
+        <!-- Favorites / Pinned Section -->
+        <div id="favorites-container" class="hidden space-y-3">
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400 font-mono">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <span>Pinned Favorites</span>
+            </div>
+            <div id="favorites-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- Main Tools Grid Section -->
+        <div class="space-y-3">
+            <div id="tools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden glass-panel rounded-2xl p-10 text-center space-y-3">
+                <div class="w-12 h-12 mx-auto rounded-full bg-slate-900 flex items-center justify-center text-slate-500">
+                    <i data-lucide="search-x" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-sm font-bold text-white">No tools found</h3>
+                <p class="text-xs text-slate-400 max-w-sm mx-auto">Try adjusting your search terms or clearing category filters to find what you are looking for.</p>
+                <button type="button" onclick="clearSearch()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-cyan-400 font-semibold border border-slate-700 transition">
+                    Reset Filters
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800/80 bg-[#090d16] text-slate-500 text-xs py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-center items-center">
+            <p>&copy; <span id="year"></span> Bharrys Ventures. Future is now.</p>
+        </div>
+    </footer>
+
+    <script>
+        const FINNHUB_API_KEY = 'dam6odhr01qvokaq5600dam6odhr01qvokaq560g';
+        const GOATCOUNTER_SITE = 'bharrys.goatcounter.com';
+
+        const DEFAULT_TOOLS = [
+            {
+                id: 'mortgage-calc',
+                title: 'Mortgage & Loan Amortization Calculator',
+                category: 'Mortgage & Loans',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://mortgagecalc.bharrys.com/',
+                icon: 'calculator',
+                description: 'Calculate monthly payments, lifetime interest, extra principal payment savings, and balance schedules with live benchmark estimates.',
+                tags: ['Mortgage', 'Amortization', 'Extra Payments', 'Home Loan', 'Interest'],
+                isLive: true
+            },
+            {
+                id: 'cd-calc',
+                title: 'Certificate of Deposit (CD) Calculator',
+                category: 'Savings & Yield',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://cdcalc.bharrys.com/',
+                icon: 'piggy-bank',
+                description: 'Estimate compound interest earnings on CDs, compare APY compounding frequencies, tax considerations, and penalty scenarios.',
+                tags: ['CD', 'Savings', 'APY', 'Compound Interest', 'Yield', 'Bank Rate'],
+                isLive: true
+            },
+            {
+                id: 'compound-interest',
+                title: 'Compound Interest & Wealth Growth',
+                category: 'Investments',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://compcalc.bharrys.com/',
+                icon: 'trending-up',
+                description: 'Project long-term investment growth with monthly recurring contributions, adjustable rate of return, and growth milestones.',
+                tags: ['Investing', 'Stocks', 'Compound Interest', 'Wealth', 'Portfolio'],
+                isLive: true
+            },
+            {
+                id: 'lease-analyzer',
+                title: 'Lease Analyzer',
+                category: 'Mortgage & Loans',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://leaseanalyzer.bharrys.com/',
+                icon: 'file-text',
+                description: 'Analyze vehicle and lease financing terms, money factors, depreciation schedules, and total effective monthly costs.',
+                tags: ['Lease', 'Auto Lease', 'Car', 'Financing', 'Vehicle'],
+                isLive: true
+            },
+            {
+                id: 'car-affordability',
+                title: 'Car Affordability Calculator',
+                category: 'Mortgage & Loans',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://carcalc.bharrys.com/',
+                icon: 'car',
+                description: 'Calculate maximum purchasing power, DTI impact, monthly vehicle loan payments, insurance, and fuel costs in real-time.',
+                tags: ['Car', 'Auto Loan', 'Affordability', 'DTI', 'Vehicle'],
+                isLive: true
+            },
+            {
+                id: 'college-tuition-calc',
+                title: 'College Tuition & Fee Cost Calculator',
+                category: 'Savings & Yield',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://collegefees.bharrys.com/',
+                icon: 'graduation-cap',
+                description: 'Calculate multi-year higher education costs, account for annual tuition inflation, room & board, and total projected degree expense.',
+                tags: ['College', 'Tuition', 'Education', 'Fees', 'Savings'],
+                isLive: true
+            },
+            {
+                id: 'stock-time-capsule',
+                title: 'Stock Time Capsule',
+                category: 'Investments',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://stocktimecapsule.bharrys.com/',
+                icon: 'history',
+                description: 'Travel back in time to analyze historical stock performance, reinvested dividends, and long-term asset growth.',
+                tags: ['Stocks', 'Investing', 'Historical', 'Returns', 'Time Capsule'],
+                isLive: true
+            },
+            {
+                id: 'home-affordability',
+                title: 'Home Ownership Affordability Calculator',
+                category: 'Mortgage & Loans',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://homecalc.bharrys.com/',
+                icon: 'home',
+                description: 'Determine total home purchase power based on gross household income, monthly debt obligations, down payment, and DTI ratios.',
+                tags: ['Home', 'Mortgage', 'Affordability', 'DTI', 'Real Estate'],
+                isLive: true
+            },
+            {
+                id: 'car-depreciation-business',
+                title: 'MACRS Vehicle Depreciation Calculator',
+                category: 'Taxes',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://macrsvehiclecalc.bharrys.com/',
+                icon: 'car',
+                description: 'Calculate Section 179 deductions, MACRS business vehicle depreciation schedules, and tax-saving write-offs for enterprise usage.',
+                tags: ['Car', 'Depreciation', 'Business', 'Tax', 'MACRS', 'Section 179'],
+                isLive: true
+            },
+            {
+                id: 'real-estate-depreciation-business',
+                title: 'MACRS Real Estate Investment Calculator',
+                category: 'Taxes',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://macrsrealestatecalc.bharrys.com/',
+                icon: 'building-2',
+                description: 'Calculate IRS Pub 527 real estate depreciation (27.5-yr residential & 39-yr commercial), land cost allocations, mid-month convention, and annual tax shields.',
+                tags: ['Real Estate', 'Property', 'Depreciation', 'Tax', 'MACRS', 'Pub 527', 'Investment'],
+                isLive: true
+            },
+            {
+                id: 'college-savings',
+                title: 'College Savings Planner',
+                category: 'Savings & Yield',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://collegesavings.bharrys.com/',
+                icon: 'graduation-cap',
+                description: 'Project future higher education costs, 529 plan growth trajectory, and required monthly contributions.',
+                tags: ['College', '529 Plan', 'Savings', 'Education', 'Tuition'],
+                isLive: true
+            },
+            {
+                id: 'plan-2-retire',
+                title: 'Plan2Retire (Retirement & FIRE Planner)',
+                category: 'Investments',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'https://plan2retire.bharrys.com/',
+                icon: 'palmtree',
+                description: 'Model retirement timeline, projected nest egg growth, safe withdrawal strategies, and FIRE financial independence milestones.',
+                tags: ['Retirement', 'FIRE', '401k', 'IRA', 'Nest Egg', 'Financial Independence'],
+                isLive: true
+            },
+            {
+                id: 'debt-payoff',
+                title: 'Debt Avalanche & Snowball Planner',
+                category: 'Mortgage & Loans',
+                badge: 'Live',
+                badgeColor: 'cyan',
+                url: 'http://debtcalc.bharrys.com/',
+                icon: 'shield-alert',
+                description: 'Create an optimized debt payoff roadmap to eliminate credit card and loan balances with minimal interest costs.',
+                tags: ['Debt', 'Credit Cards', 'Avalanche', 'Snowball', 'Payoff'],
+                isLive: true
+            },
+            {
+                id: 'cashback-hack',
+                title: 'Credit Card Cashback Hack',
+                category: 'Credit & Rewards',
+                badge: 'Planned',
+                badgeColor: 'purple',
+                url: '#',
+                icon: 'credit-card',
+                description: 'Get smart suggestions on which credit card to use in each spending category and store to maximize cashback, based on your cards and their reward rates.',
+                tags: ['Credit Cards', 'Cashback', 'Rewards', 'Categories', 'Strategy'],
+                isLive: false
+            }
+        ];
+
+        let toolsList = [];
+        let activeCategory = 'All';
+        let pinnedToolIds = new Set();
+
+        const formatPercent = (val) => `${val.toFixed(2)}%`;
+
+        function detectAdBlocker() {
+            if (sessionStorage.getItem('dismissed_adblock_notice')) {
+                return;
+            }
+
+            if (window.goatcounterLoaded || (window.goatcounter && window.goatcounter.count)) {
+                return;
+            }
+
+            if (window.goatcounterBlocked) {
+                showAdBlockBanner();
+                return;
+            }
+
+            const bait = document.createElement('div');
+            bait.className = 'pub_300x250 pub_300x250m pub_728x90 text-ad ad-text ad-unit text-ads';
+            bait.style.cssText = 'width: 1px !important; height: 1px !important; position: absolute !important; left: -10000px !important; top: -10000px !important;';
+            document.body.appendChild(bait);
+
+            setTimeout(() => {
+                const isBaitBlocked = bait.offsetParent === null || bait.offsetHeight === 0 || bait.offsetWidth === 0;
+                if (bait.parentNode) bait.parentNode.removeChild(bait);
+
+                if (isBaitBlocked && !window.goatcounterLoaded) {
+                    showAdBlockBanner();
+                }
+            }, 150);
+        }
+
+        function showAdBlockBanner() {
+            const banner = document.getElementById('adblock-banner');
+            if (banner) {
+                banner.classList.remove('hidden');
+            }
+        }
+
+        function dismissAdBlockBanner() {
+            const banner = document.getElementById('adblock-banner');
+            if (banner) banner.classList.add('hidden');
+            sessionStorage.setItem('dismissed_adblock_notice', 'true');
+        }
+
+        async function fetchGoatCounterVisits() {
+            const visitEl = document.getElementById('stat-visit-count');
+            try {
+                const res = await fetch(`https://${GOATCOUNTER_SITE}/counter/TOTAL.json`);
+                if (!res.ok) throw new Error(`GoatCounter HTTP error: ${res.status}`);
+                
+                const data = await res.json();
+                
+                if (visitEl && data.count !== undefined) {
+                    const formattedCount = parseInt(data.count.replace(/[^0-9]/g, ''), 10);
+                    visitEl.textContent = formattedCount.toLocaleString();
+                }
+            } catch (err) {
+                if (visitEl) {
+                    visitEl.textContent = 'Active';
+                }
+            }
+        }
+
+        async function fetchMarketIndices() {
+            const iconEl = document.getElementById('refresh-market-icon');
+            const timestampEl = document.getElementById('market-timestamp');
+            if (iconEl) iconEl.classList.add('animate-spin');
+
+            const symbols = [
+                { symbol: 'SPY', priceId: 'idx-spy-price', changeId: 'idx-spy-change' },
+                { symbol: 'QQQ', priceId: 'idx-qqq-price', changeId: 'idx-qqq-change' },
+                { symbol: 'DIA', priceId: 'idx-dia-price', changeId: 'idx-dia-change' }
+            ];
+
+            try {
+                await Promise.all(symbols.map(async (item) => {
+                    const url = `https://finnhub.io/api/v1/quote?symbol=${item.symbol}&token=${FINNHUB_API_KEY}`;
+                    const res = await fetch(url);
+                    if (!res.ok) throw new Error(`Finnhub API Error: ${res.status}`);
+                    
+                    const data = await res.json();
+                    
+                    if (data && data.c !== 0) {
+                        const priceEl = document.getElementById(item.priceId);
+                        const changeEl = document.getElementById(item.changeId);
+
+                        if (priceEl) priceEl.textContent = `$${data.c.toFixed(2)}`;
+                        if (changeEl) {
+                            const isPositive = data.d >= 0;
+                            const sign = isPositive ? '+' : '';
+                            changeEl.textContent = `${sign}${data.d.toFixed(2)} (${sign}${data.dp.toFixed(2)}%)`;
+                            changeEl.className = `text-[10px] mt-0.5 font-bold ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`;
+                        }
+                    }
+                }));
+
+                if (timestampEl) {
+                    const now = new Date();
+                    timestampEl.textContent = `Live ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                }
+            } catch (err) {
+                if (timestampEl) timestampEl.textContent = 'API Error';
+            } finally {
+                if (iconEl) iconEl.classList.remove('animate-spin');
+            }
+        }
+
+        async function fetchLiveMortgageRates() {
+            const timestampEl = document.getElementById('rate-timestamp');
+            const iconEl = document.getElementById('refresh-rates-icon');
+            if (iconEl) iconEl.classList.add('animate-spin');
+
+            try {
+                const url = `https://finnhub.io/api/v1/bond/tick?symbol=US10Y&token=${FINNHUB_API_KEY}`;
+                const res = await fetch(url);
+                
+                let raw10YrYield = 4.31;
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.c && data.c.length > 0) {
+                        raw10YrYield = data.c[data.c.length - 1];
+                    }
+                }
+
+                const marketSpread = 2.75;
+                const mortgage30Est = raw10YrYield + marketSpread;
+                const mortgage15Est = mortgage30Est - 0.65;
+                const cpiRate = 3.40;
+
+                document.getElementById('hub-rate-10yr').textContent = formatPercent(raw10YrYield);
+                document.getElementById('hub-rate-30yr').textContent = formatPercent(mortgage30Est);
+                document.getElementById('hub-rate-15yr').textContent = formatPercent(mortgage15Est);
+                
+                const cpiEl = document.getElementById('hub-rate-cpi');
+                if (cpiEl) cpiEl.textContent = formatPercent(cpiRate);
+
+                if (timestampEl) {
+                    const now = new Date();
+                    timestampEl.textContent = `Live ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                }
+            } catch (err) {
+                if (timestampEl) timestampEl.textContent = 'Calc Error';
+            } finally {
+                if (iconEl) iconEl.classList.remove('animate-spin');
+            }
+        }
+
+        function startAutoRefreshRoutine() {
+            const REFRESH_INTERVAL_MS = 5 * 60 * 1000;
+            setInterval(() => {
+                fetchMarketIndices();
+                fetchLiveMortgageRates();
+            }, REFRESH_INTERVAL_MS);
+        }
+
+        function initData() {
+            toolsList = [...DEFAULT_TOOLS];
+
+            const savedPins = localStorage.getItem('bharrys_pinned_tools');
+            if (savedPins) {
+                try {
+                    pinnedToolIds = new Set(JSON.parse(savedPins));
+                } catch (e) {
+                    pinnedToolIds = new Set();
+                }
+            }
+
+            renderCategories();
+            handleSearchFilter();
+            updateStats();
+            fetchGoatCounterVisits();
+        }
+
+        function togglePin(toolId, event) {
+            if (event) event.stopPropagation();
+            if (pinnedToolIds.has(toolId)) {
+                pinnedToolIds.delete(toolId);
+            } else {
+                pinnedToolIds.add(toolId);
+            }
+            localStorage.setItem('bharrys_pinned_tools', JSON.stringify(Array.from(pinnedToolIds)));
+            handleSearchFilter();
+        }
+
+        function renderCategories() {
+            const categories = ['All', ...new Set(toolsList.map(t => t.category))];
+            const container = document.getElementById('category-pills');
+            container.innerHTML = '';
+
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition border ${
+                    activeCategory === cat
+                        ? 'bg-cyan-500 text-black border-cyan-400 font-bold shadow-glow'
+                        : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white hover:border-slate-700'
+                }`;
+                btn.textContent = cat;
+                btn.onclick = () => {
+                    activeCategory = cat;
+                    renderCategories();
+                    handleSearchFilter();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function handleSearchFilter() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const liveOnly = document.getElementById('toggle-live-only').checked;
+            const clearBtn = document.getElementById('clear-search-btn');
+
+            if (clearBtn) {
+                if (query.length > 0) clearBtn.classList.remove('hidden');
+                else clearBtn.classList.add('hidden');
+            }
+
+            const filtered = toolsList.filter(tool => {
+                if (activeCategory !== 'All' && tool.category !== activeCategory) return false;
+                if (liveOnly && !tool.isLive) return false;
+                if (query) {
+                    const matchTitle = tool.title.toLowerCase().includes(query);
+                    const matchDesc = tool.description.toLowerCase().includes(query);
+                    const matchCategory = tool.category.toLowerCase().includes(query);
+                    const matchTags = tool.tags.some(t => t.toLowerCase().includes(query));
+                    return matchTitle || matchDesc || matchCategory || matchTags;
+                }
+                return true;
+            });
+
+            renderPinnedSection();
+            renderToolsGrid(filtered);
+        }
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('toggle-live-only').checked = false;
+            activeCategory = 'All';
+            renderCategories();
+            handleSearchFilter();
+        }
+
+        function renderPinnedSection() {
+            const container = document.getElementById('favorites-container');
+            const grid = document.getElementById('favorites-grid');
+            grid.innerHTML = '';
+
+            const pinnedTools = toolsList.filter(t => pinnedToolIds.has(t.id));
+
+            if (pinnedTools.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+
+            pinnedTools.forEach(tool => {
+                grid.appendChild(createToolCard(tool));
+            });
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function renderToolsGrid(tools) {
+            const grid = document.getElementById('tools-grid');
+            const emptyState = document.getElementById('empty-state');
+            const counter = document.getElementById('tools-counter');
+
+            grid.innerHTML = '';
+            counter.textContent = `Showing ${tools.length} tool${tools.length === 1 ? '' : 's'}`;
+
+            if (tools.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            } else {
+                grid.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+
+                tools.forEach(tool => {
+                    grid.appendChild(createToolCard(tool));
+                });
+            }
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function createToolCard(tool) {
+            const card = document.createElement('div');
+            card.className = `glass-panel rounded-2xl p-5 space-y-4 flex flex-col justify-between glass-panel-hover relative group ${
+                tool.isLive ? 'border-slate-800' : 'border-slate-800/60 opacity-90'
+            }`;
+
+            const isPinned = pinnedToolIds.has(tool.id);
+
+            const badgeStyles = {
+                cyan: 'bg-cyan-950/80 text-cyan-400 border-cyan-800/50',
+                emerald: 'bg-emerald-950/80 text-emerald-400 border-emerald-800/50',
+                amber: 'bg-amber-950/80 text-amber-400 border-amber-800/50',
+                purple: 'bg-purple-950/80 text-purple-400 border-purple-800/50'
+            };
+
+            const currentBadgeStyle = badgeStyles[tool.badgeColor] || badgeStyles.cyan;
+
+            card.innerHTML = `
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] uppercase font-mono tracking-wider text-slate-400 bg-slate-900 px-2.5 py-1 rounded-full border border-slate-800">
+                            ${tool.category}
+                        </span>
+                        
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md border ${currentBadgeStyle}">
+                                ${tool.isLive ? '● ' : ''}${tool.badge}
+                            </span>
+                            <button type="button" onclick="togglePin('${tool.id}', event)" title="${isPinned ? 'Unpin' : 'Pin to favorites'}" class="p-1 rounded-lg hover:bg-slate-800 text-slate-500 transition ${isPinned ? 'text-amber-400' : ''}">
+                                <i data-lucide="star" class="w-4 h-4 ${isPinned ? 'fill-amber-400' : ''}"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3 pt-1">
+                        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-700/60 text-cyan-400 group-hover:scale-105 transition">
+                            <i data-lucide="${tool.icon || 'calculator'}" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white group-hover:text-cyan-300 transition">${tool.title}</h4>
+                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">${tool.description}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1.5 pt-1">
+                        ${tool.tags.map(tag => `
+                            <span class="text-[10px] font-medium text-slate-400 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800/60">
+                                #${tag}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-800/80">
+                    ${tool.isLive ? `
+                        <a href="${tool.url}" target="_blank" rel="noopener noreferrer" class="w-full px-4 py-2 text-xs font-bold rounded-xl bg-slate-800 hover:bg-cyan-500 hover:text-black text-cyan-400 border border-slate-700/80 transition flex items-center justify-center gap-2 group/btn">
+                            <span>Launch Calculator</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover/btn:translate-x-1 transition"></i>
+                        </a>
+                    ` : `
+                        <button type="button" disabled class="w-full px-4 py-2 text-xs font-semibold rounded-xl bg-slate-900 text-slate-500 border border-slate-800/60 cursor-not-allowed flex items-center justify-center gap-2">
+                            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                            <span>In Development</span>
+                        </button>
+                    `}
+                </div>
+            `;
+
+            return card;
+        }
+
+        function updateStats() {
+            const activeCount = toolsList.filter(t => t.isLive).length;
+            const plannedCount = toolsList.filter(t => !t.isLive).length;
+
+            const activeEl = document.getElementById('stat-active-count');
+            const plannedEl = document.getElementById('stat-planned-count');
+
+            if (activeEl) activeEl.textContent = `${activeCount} Active`;
+            if (plannedEl) plannedEl.textContent = `${plannedCount} Planned`;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+            const yearEl = document.getElementById('year');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+            
+            initData();
+            fetchMarketIndices();
+            fetchLiveMortgageRates();
+            startAutoRefreshRoutine();
+
+            setTimeout(detectAdBlocker, 1500);
+        });
+    </script>
+</body>
+</html>
